@@ -1,0 +1,44 @@
+version: 2.1
+orbs:
+  node: circleci/node@1.1.6
+jobs:
+  build-and-test:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - node/with-cache:
+          steps:
+            - run: npm install
+            - run: npm test
+  deploy:
+    executor:
+      name: node/default
+
+    steps:
+      - checkout
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > .npmrc
+      - run:
+          name: Publish package
+          command: npm publish
+
+workflows:
+  build-and-test:
+    jobs:
+      - build-and-test
+
+  test-deploy:
+    jobs:
+      - deploy:
+          filters:
+            branches:
+              ignore: /.*/
+
+            # Make sure the deploy job runs *ONLY* when a commit has been tagged with a
+            # version number and pushed.
+            # https://circleci.com/blog/publishing-npm-packages-using-circleci-2-0/
+            tags:
+              # x.y.z version is expected.
+              only: /^\d+\.\d+\.\d+/
