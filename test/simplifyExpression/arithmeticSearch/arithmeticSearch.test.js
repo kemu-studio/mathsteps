@@ -1,9 +1,9 @@
-const arithmeticSearch = require('../../../lib/simplifyExpression/arithmeticSearch');
+const arithmeticSearch = require('../../../lib/simplifyExpression/arithmeticSearch')
 
-const TestUtil = require('../../TestUtil');
+const TestUtil = require('../../TestUtil')
 
 function testArithmeticSearch(exprStr, outputStr) {
-  TestUtil.testSimplification(arithmeticSearch, exprStr, outputStr);
+  TestUtil.testSimplification(arithmeticSearch, exprStr, outputStr)
 }
 
 describe.skip('evaluate arithmeticSearch', function () {
@@ -11,6 +11,6 @@ describe.skip('evaluate arithmeticSearch', function () {
     ['2+2', '4'],
     ['2*3*5', '30'],
     ['9/4', '9/4'], //  does not divide
-  ];
-  tests.forEach(t => testArithmeticSearch(t[0], t[1]));
-});
+  ]
+  tests.forEach(t => testArithmeticSearch(t[0], t[1]))
+})

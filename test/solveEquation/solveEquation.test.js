@@ -1,23 +1,22 @@
-const assert = require('assert');
+const assert = require('assert')
 
-const ChangeTypes = require('../../lib/ChangeTypes');
-const solveEquation = require('../../lib/solveEquation');
+const ChangeTypes = require('../../lib/ChangeTypes')
+const solveEquation = require('../../lib/solveEquation')
 
-const NO_STEPS = 'no-steps';
+const NO_STEPS = 'no-steps'
 
-function testSolve(equationString, outputStr, debug=false) {
+function testSolve(equationString, outputStr, debug = false) {
   it(equationString + ' -> ' + outputStr, (done) => {
-    const steps = solveEquation(equationString, debug);
-    let lastStep;
+    const steps = solveEquation(equationString, debug)
+    let lastStep
     if (steps.length === 0) {
-      lastStep = NO_STEPS;
+      lastStep = NO_STEPS
+    } else {
+      lastStep = steps[steps.length - 1].newEquation.print()
     }
-    else {
-      lastStep = steps[steps.length -1].newEquation.print();
-    }
-    assert.equal(lastStep, outputStr);
-    done();
-  });
+    assert.equal(lastStep, outputStr)
+    done()
+  })
 }
 
 describe.skip('solveEquation for =', function () {
@@ -60,9 +59,9 @@ describe.skip('solveEquation for =', function () {
     // TODO: figure out what to do about errors from rounding midway through
     // this gives us 6.3995 when it should actually be 6.4 :(
     // ['x - 3.4= ( x - 2.5)/( 1.3)', 'x = 6.4']
-  ];
-  tests.forEach(t => testSolve(t[0], t[1], t[2]));
-});
+  ]
+  tests.forEach(t => testSolve(t[0], t[1], t[2]))
+})
 
 describe.skip('solveEquation for non = comparators', function() {
   const tests = [
@@ -71,17 +70,17 @@ describe.skip('solveEquation for non = comparators', function() {
     ['-x > 1', 'x < -1'],
     ['2 - x < 3', 'x > -1'],
     ['9.5j / 6+ 5.5j >= 3( 5j - 2)', 'j <= 0.7579']
-  ];
-  tests.forEach(t => testSolve(t[0], t[1], t[2]));
-});
+  ]
+  tests.forEach(t => testSolve(t[0], t[1], t[2]))
+})
 
-function testSolveConstantEquation(equationString, expectedChange, debug=false) {
+function testSolveConstantEquation(equationString, expectedChange, debug = false) {
   it(equationString + ' -> ' + expectedChange, (done) => {
-    const steps = solveEquation(equationString, debug);
-    const actualChange = steps[steps.length -1].changeType;
-    assert.equal(actualChange, expectedChange);
-    done();
-  });
+    const steps = solveEquation(equationString, debug)
+    const actualChange = steps[steps.length - 1].changeType
+    assert.equal(actualChange, expectedChange)
+    done()
+  })
 }
 
 describe.skip('constant comparison support', function () {
@@ -111,20 +110,20 @@ describe.skip('constant comparison support', function () {
     ['( r )/( ( r ) ) = ( 1)/( 10)', ChangeTypes.STATEMENT_IS_FALSE],
     ['5 + (x - 5) = x', ChangeTypes.STATEMENT_IS_TRUE],
     ['4x - 4= 4x', ChangeTypes.STATEMENT_IS_FALSE],
-  ];
-  tests.forEach(t => testSolveConstantEquation(t[0], t[1], t[2]));
-});
+  ]
+  tests.forEach(t => testSolveConstantEquation(t[0], t[1], t[2]))
+})
 
-function testEquationError(equationString, debug=false) {
+function testEquationError(equationString, debug = false) {
   it(equationString + ' throws error', (done) => {
-    assert.throws(() => solveEquation(equationString, debug),Error);
-    done();
-  });
+    assert.throws(() => solveEquation(equationString, debug),Error)
+    done()
+  })
 }
 
 describe.skip('solveEquation errors', function() {
   const tests = [
     ['( x + 2) ^ ( 2) - x ^ ( 2) = 4( x + 1)']
-  ];
-  tests.forEach(t => testEquationError(t[0], t[1]));
-});
+  ]
+  tests.forEach(t => testEquationError(t[0], t[1]))
+})

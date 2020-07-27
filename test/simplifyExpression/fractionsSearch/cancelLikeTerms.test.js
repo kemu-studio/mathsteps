@@ -1,9 +1,9 @@
-const cancelLikeTerms = require('../../../lib/simplifyExpression/fractionsSearch/cancelLikeTerms');
+const cancelLikeTerms = require('../../../lib/simplifyExpression/fractionsSearch/cancelLikeTerms')
 
-const TestUtil = require('../../TestUtil');
+const TestUtil = require('../../TestUtil')
 
 function testCancelLikeTerms(exprStr, expectedStr) {
-  TestUtil.testSimplification(cancelLikeTerms, exprStr, expectedStr);
+  TestUtil.testSimplification(cancelLikeTerms, exprStr, expectedStr)
 }
 
 describe.skip('cancel like terms', function () {
@@ -21,13 +21,13 @@ describe.skip('cancel like terms', function () {
     ['(2x+5)^8 / (2x+5)^2', '(2x + 5)^(8 - (2))'],
     ['(4x^3) / (5x^2)', '(4x^(3 - (2))) / (5)'],
     ['-x / -x', '1'],
-  ];
+  ]
 
   tests.forEach(t => {
-    const before = t[0];
-    const after = t[1];
+    const before = t[0]
+    const after = t[1]
     it(before + ' -> ' + after, function () {
-      testCancelLikeTerms(before, after);
-    });
-  });
-});
+      testCancelLikeTerms(before, after)
+    })
+  })
+})

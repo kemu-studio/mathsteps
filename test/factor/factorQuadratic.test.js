@@ -1,8 +1,8 @@
-const factorQuadratic = require('../../lib/factor/factorQuadratic');
-const TestUtil = require('../TestUtil');
+const factorQuadratic = require('../../lib/factor/factorQuadratic')
+const TestUtil = require('../TestUtil')
 
 function testFactorQuadratic(input, output) {
-  TestUtil.testSimplification(factorQuadratic, input, output);
+  TestUtil.testSimplification(factorQuadratic, input, output)
 }
 
 describe.skip('factorQuadratic', function () {
@@ -43,6 +43,6 @@ describe.skip('factorQuadratic', function () {
     // TODO: quadratic equation
     ['x^2 + 4x + 1', 'x^2 + 4x + 1'],
     ['x^2 - 3x + 1', 'x^2 - 3x + 1'],
-  ];
-  tests.forEach(t => testFactorQuadratic(t[0], t[1]));
-});
+  ]
+  tests.forEach(t => testFactorQuadratic(t[0], t[1]))
+})
