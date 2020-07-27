@@ -1,30 +1,30 @@
-const assert = require('assert');
-const math = require('mathjs');
+const assert = require('assert')
+const math = require('mathjs')
 
-const flattenOperands = require('../../lib/util/flattenOperands');
-const print = require('../../lib/util/print');
+const flattenOperands = require('../../lib/util/flattenOperands')
+const print = require('../../lib/util/print')
 
-const Node = require('../../lib/node');
-const TestUtil = require('../TestUtil');
+const Node = require('../../lib/node')
+const TestUtil = require('../TestUtil')
 
-function testFlatten(exprStr, afterNode, debug=false) {
-  const flattened = flattenOperands(math.parse(exprStr));
+function testFlatten(exprStr, afterNode, debug = false) {
+  const flattened = flattenOperands(math.parse(exprStr))
   if (debug) {
     // eslint-disable-next-line
     console.log(print(flattened));
   }
-  TestUtil.removeComments(flattened);
-  TestUtil.removeComments(afterNode);
+  TestUtil.removeComments(flattened)
+  TestUtil.removeComments(afterNode)
   it(print(flattened), function() {
-    assert.deepEqual(flattened, afterNode);
-  });
+    assert.deepEqual(flattened, afterNode)
+  })
 }
 
 // to create nodes, for testing
-const opNode = Node.Creator.operator;
-const constNode = Node.Creator.constant;
-const symbolNode = Node.Creator.symbol;
-const parenNode = Node.Creator.parenthesis;
+const opNode = Node.Creator.operator
+const constNode = Node.Creator.constant
+const symbolNode = Node.Creator.symbol
+const parenNode = Node.Creator.parenthesis
 
 describe('flattens + and *', function () {
   const tests = [
@@ -61,9 +61,9 @@ describe('flattens + and *', function () {
         ], true), symbolNode('y')])
     ],
     ['3x*4x', opNode('*', [math.parse('3x'), math.parse('4x')])]
-  ];
-  tests.forEach(t => testFlatten(t[0], t[1]));
-});
+  ]
+  tests.forEach(t => testFlatten(t[0], t[1]))
+})
 
 describe('flattens division', function () {
   const tests = [
@@ -79,9 +79,9 @@ describe('flattens division', function () {
     ['2 x * 4 x / 8',
       opNode('*', [math.parse('2x'), opNode(
         '/', [math.parse('4x'), constNode(8)])])],
-  ];
-  tests.forEach(t => testFlatten(t[0], t[1]));
-});
+  ]
+  tests.forEach(t => testFlatten(t[0], t[1]))
+})
 
 describe('subtraction', function () {
   const tests = [
@@ -91,6 +91,6 @@ describe('subtraction', function () {
     ['x - 3', opNode('+', [symbolNode('x'), constNode(-3)])],
     ['x + 4 - (y+4)',
       opNode('+', [symbolNode('x'), constNode(4), math.parse('-(y+4)')])],
-  ];
-  tests.forEach(t => testFlatten(t[0], t[1]));
-});
+  ]
+  tests.forEach(t => testFlatten(t[0], t[1]))
+})
