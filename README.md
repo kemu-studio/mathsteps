@@ -1,7 +1,7 @@
 # Mathsteps - A step by step solver for math
 
-[![Join the chat at https://gitter.im/mathsteps-chat/Lobby](https://badges.gitter.im/mathsteps-chat/Lobby.svg)](https://gitter.im/mathsteps-chat/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Build Status](https://travis-ci.org/socraticorg/mathsteps.svg?branch=master)](https://travis-ci.org/socraticorg/mathsteps)
+[![CircleCI](https://circleci.com/gh/kemu-studio/mathsteps.svg?style=svg)](https://app.circleci.com/pipelines/github/kemu-studio/mathsteps.svg)
+[![Git Commit](https://img.shields.io/github/last-commit/kemu-studio/mathsteps.svg?style=flat)](https://github.com/kemu-studio/mathsteps/commits/master)
 
 # Demo ![Calculla.com](https://calculla.com/g/calculla_logo_small_32.png)
 
