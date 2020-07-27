@@ -18,11 +18,11 @@ function testOneStep(exprStr, outputStr, debug = false) {
     // eslint-disable-next-line
     console.log(nodeStatus.changeType);
     // eslint-disable-next-line
-    console.log(print(nodeStatus.newNode));
+    console.log(print.ascii(nodeStatus.newNode));
   }
   it(exprStr + ' -> ' + outputStr, function () {
     assert.deepEqual(
-      print(nodeStatus.newNode),
+      print.ascii(nodeStatus.newNode),
       outputStr)
   })
 }
@@ -73,11 +73,14 @@ describe('stepThrough returning no steps', function() {
       simplifyExpression('12x^2'),
       [])
   })
+  /*
+  Currently, we can simplify it to: 10x^2 + sqrt(5)
   it('2*5x^2 + sqrt(5) has unsupported sqrt', function () {
     assert.deepEqual(
       simplifyExpression('2*5x^2 + sqrt(5)'),
-      [])
-  })
+      []);
+  });
+  */
 })
 
 describe('keeping parens in important places, on printing', function() {
