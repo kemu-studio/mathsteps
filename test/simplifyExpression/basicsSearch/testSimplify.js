@@ -1,13 +1,15 @@
 const assert = require('assert')
 
-const {parse, print} = require('math-parser')
+const print = require('../../../lib/util/print')
+
+const TestUtil = require('../../TestUtil')
 
 function testSimplify(exprStr, outputStr, simplifyOperation) {
   it(exprStr + ' -> ' + outputStr, function () {
-    const inputNode = parse(exprStr)
+    const inputNode = TestUtil.parseAndFlatten(exprStr)
     const newNode = simplifyOperation(inputNode).newNode
     assert.equal(
-      print(newNode),
+      print.ascii(newNode),
       outputStr)
   })
 }

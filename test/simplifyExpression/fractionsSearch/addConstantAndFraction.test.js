@@ -7,7 +7,7 @@ function testAddConstantAndFraction(exprString, outputList) {
   TestUtil.testSubsteps(addConstantAndFraction, exprString, outputList, lastString)
 }
 
-describe.skip('addConstantAndFraction', function () {
+describe('addConstantAndFraction', function () {
   const tests = [
     ['7 + 1/2',
       ['14/2 + 1/2',
@@ -24,8 +24,8 @@ describe.skip('addConstantAndFraction', function () {
         '6.3'],
     ],
     ['1/3 + 5.8',
-      ['0.3333 + 5.8',
-        '6.1333']
+      ['0.3333333333333333333333333333333333333333333333333333333333333333 + 5.8',
+        '6.133333333333333333333333333333333333333333333333333333333333333']
     ],
   ]
   tests.forEach(t => testAddConstantAndFraction(t[0], t[1]))

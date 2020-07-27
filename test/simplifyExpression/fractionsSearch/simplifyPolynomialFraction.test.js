@@ -6,7 +6,7 @@ function testSimplifyPolynomialFraction(exprStr, outputStr) {
   TestUtil.testSimplification(simplifyPolynomialFraction, exprStr, outputStr)
 }
 
-describe.skip('simplifyPolynomialFraction', function() {
+describe('simplifyPolynomialFraction', function() {
   const tests = [
     ['2x/4', '1/2 x'],
     ['9y/3', '3y'],

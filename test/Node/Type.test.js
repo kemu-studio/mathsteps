@@ -1,11 +1,13 @@
 const assert = require('assert')
 const math = require('mathjs')
 
+const Negative = require('../../lib/Negative')
 const Node = require('../../lib/node')
+const TestUtil = require('../TestUtil')
 
 const constNode = Node.Creator.constant
 
-describe.skip('Node.Type works', function () {
+describe('Node.Type works', function () {
   it('(2+2) parenthesis', function () {
     assert.deepEqual(
       Node.Type.isParenthesis(math.parse('(2+2)')),
@@ -41,10 +43,10 @@ describe.skip('Node.Type works', function () {
       Node.Type.isOperator(math.parse('-x')),
       false)
   })
-  it('-x symbol', function () {
+  it('-x not symbol', function () {
     assert.deepEqual(
       Node.Type.isSymbol(math.parse('-x')),
-      true)
+      false)
   })
   it('y symbol', function () {
     assert.deepEqual(
@@ -68,7 +70,7 @@ describe.skip('Node.Type works', function () {
   // });
 })
 
-describe.skip('isConstantOrConstantFraction', function () {
+describe('isConstantOrConstantFraction', function () {
   it('2 true', function () {
     assert.deepEqual(
       Node.Type.isConstantOrConstantFraction(math.parse('2')),
@@ -86,7 +88,7 @@ describe.skip('isConstantOrConstantFraction', function () {
   })
 })
 
-describe.skip('isIntegerFraction', function () {
+describe('isIntegerFraction', function () {
   it('4/5 true', function () {
     assert.deepEqual(
       Node.Type.isIntegerFraction(math.parse('4/5')),
@@ -106,5 +108,69 @@ describe.skip('isIntegerFraction', function () {
     assert.deepEqual(
       Node.Type.isIntegerFraction(math.parse('5')),
       false)
+  })
+})
+
+describe('isFraction', function () {
+  it('2/3 true', function () {
+    assert.deepEqual(
+      Node.CustomType.isFraction(math.parse('2/3')),
+      true)
+  })
+  it('-2/3 true', function () {
+    assert.deepEqual(
+      Node.CustomType.isFraction(math.parse('-2/3')),
+      true)
+  })
+  it('-(2/3) true', function () {
+    assert.deepEqual(
+      Node.CustomType.isFraction(math.parse('-(2/3)')),
+      true)
+  })
+  it('(2/3) true', function () {
+    assert.deepEqual(
+      Node.CustomType.isFraction(math.parse('(2/3)')),
+      true)
+  })
+})
+
+// Tests imported from al_mixed_numbers
+describe('isMixedNumber', function () {
+  // Tests imported from al_mixed_numbers
+  // TODO: Review it.
+  const tests = [
+    ['5(1/6)'],
+    ['2(2/3)'],
+  ]
+  tests.forEach(t => assert(Node.Type.isMixedNumber(math.parse(t[0]))))
+})
+
+describe('getFraction', function () {
+  it('2/3 2/3', function () {
+    assert.deepEqual(
+      Node.CustomType.getFraction(math.parse('2/3')),
+      math.parse('2/3'))
+  })
+
+  const expectedFraction = math.parse('2/3')
+  TestUtil.removeComments(expectedFraction)
+
+  it('(2/3) 2/3', function () {
+    assert.deepEqual(
+      Node.CustomType.getFraction(math.parse('(2/3)')),
+      expectedFraction)
+  })
+
+  // we can't just parse -2/3 to get the expected fraction,
+  // because that will put a unary minus on the 2,
+  // instead of using a constant node of value -2 as our code does
+  const negativeExpectedFraction = math.parse('2/3')
+  TestUtil.removeComments(negativeExpectedFraction)
+  Negative.negate(negativeExpectedFraction)
+
+  it('-(2/3) -2/3', function () {
+    assert.deepEqual(
+      Node.CustomType.getFraction(math.parse('-(2/3)')),
+      negativeExpectedFraction)
   })
 })

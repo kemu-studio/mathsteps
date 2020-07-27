@@ -1,12 +1,12 @@
-const nthRoot = require('../../../lib/simplifyExpression/functionsSearch/nthRoot')
+const NthRoot = require('../../../lib/simplifyExpression/functionsSearch/nthRoot')
 
 const TestUtil = require('../../TestUtil')
 
 function testNthRoot(exprString, outputStr) {
-  TestUtil.testSimplification(nthRoot, exprString, outputStr)
+  TestUtil.testSimplification(NthRoot.nthRoot, exprString, outputStr)
 }
 
-describe.skip('simplify nthRoot', function () {
+describe('simplify nthRoot', function () {
   const tests = [
     ['nthRoot(4)', '2'],
     ['nthRoot(8, 3)', '2'],
@@ -27,36 +27,38 @@ describe.skip('simplify nthRoot', function () {
     ['nthRoot(2 * 18 * x ^ 2, 2)', '2 * 3 * x'],
     ['nthRoot(x * x, 2)', 'x'],
     ['nthRoot(x * x * (2 + 3), 2)', 'x * nthRoot((2 + 3), 2)'],
+    ['nthRoot(64, 3)', '4'],
+    ['nthRoot(35937, 3)', '33'],
   ]
   tests.forEach(t => testNthRoot(t[0], t[1]))
 })
 
 function testNthRootSteps(exprString, outputList) {
   const lastString = outputList[outputList.length - 1]
-  TestUtil.testSubsteps(nthRoot, exprString, outputList, lastString)
+  TestUtil.testSubsteps(NthRoot.nthRoot, exprString, outputList, lastString)
 }
 
-describe.skip('nthRoot steps', function () {
+describe('nthRoot steps', function () {
   const tests = [
     ['nthRoot(12)',
       ['nthRoot(2 * 2 * 3)',
-        'nthRoot((2 * 2) * 3)',
-        'nthRoot(2 ^ 2 * 3)',
+        'nthRoot((2 * 2) * 3, 2)',
+        'nthRoot(2 ^ 2 * 3, 2)',
         'nthRoot(2 ^ 2, 2) * nthRoot(3, 2)',
         '2 * nthRoot(3, 2)']
     ],
     ['nthRoot(72)',
       ['nthRoot(2 * 2 * 2 * 3 * 3)',
-        'nthRoot((2 * 2) * 2 * (3 * 3))',
-        'nthRoot(2 ^ 2 * 2 * 3 ^ 2)',
+        'nthRoot((2 * 2) * 2 * (3 * 3), 2)',
+        'nthRoot(2 ^ 2 * 2 * 3 ^ 2, 2)',
         'nthRoot(2 ^ 2, 2) * nthRoot(2, 2) * nthRoot(3 ^ 2, 2)',
         '2 * nthRoot(2, 2) * 3',
         '2 * 3 * nthRoot(2, 2)']
     ],
     ['nthRoot(36*x)',
       ['nthRoot(2 * 2 * 3 * 3 * x)',
-        'nthRoot((2 * 2) * (3 * 3) * x)',
-        'nthRoot(2 ^ 2 * 3 ^ 2 * x)',
+        'nthRoot((2 * 2) * (3 * 3) * x, 2)',
+        'nthRoot(2 ^ 2 * 3 ^ 2 * x, 2)',
         'nthRoot(2 ^ 2, 2) * nthRoot(3 ^ 2, 2) * nthRoot(x, 2)',
         '2 * 3 * nthRoot(x, 2)']
     ],
@@ -66,7 +68,27 @@ describe.skip('nthRoot steps', function () {
         'nthRoot(2 ^ 2 * 3 ^ 2 * x ^ 2, 2)',
         'nthRoot(2 ^ 2, 2) * nthRoot(3 ^ 2, 2) * nthRoot(x ^ 2, 2)',
         '2 * 3 * x']
-    ]
+    ],
+    ['nthRoot(32, 3)',
+      ['nthRoot(2 * 2 * 2 * 2 * 2, 3)',
+        'nthRoot((2 * 2 * 2) * (2 * 2), 3)',
+        'nthRoot(2 ^ 3 * 2 ^ 2, 3)',
+        'nthRoot(2 ^ 3, 3) * nthRoot(2 ^ 2, 3)',
+        '2 * nthRoot(2 ^ 2, 3)']
+    ],
+    ['nthRoot(32, 4)',
+      ['nthRoot(2 * 2 * 2 * 2 * 2, 4)',
+        'nthRoot((2 * 2 * 2 * 2) * 2, 4)',
+        'nthRoot(2 ^ 4 * 2, 4)',
+        'nthRoot(2 ^ 4, 4) * nthRoot(2, 4)',
+        '2 * nthRoot(2, 4)']
+    ],
+    ['nthRoot(2 * 2 * 3 * 2, 3)',
+      ['nthRoot((2 * 2 * 2) * 3, 3)',
+        'nthRoot(2 ^ 3 * 3, 3)',
+        'nthRoot(2 ^ 3, 3) * nthRoot(3, 3)',
+        '2 * nthRoot(3, 3)']
+    ],
   ]
   tests.forEach(t => testNthRootSteps(t[0], t[1]))
 })

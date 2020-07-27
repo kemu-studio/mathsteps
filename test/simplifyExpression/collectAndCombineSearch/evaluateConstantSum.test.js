@@ -7,7 +7,7 @@ function testEvaluateConstantSum(exprString, outputList) {
   TestUtil.testSubsteps(evaluateConstantSum, exprString, outputList, lastString)
 }
 
-describe.skip('evaluateConstantSum', function () {
+describe('evaluateConstantSum', function () {
   const tests = [
     ['4/10 + 3/5',
       ['4/10 + (3 * 2) / (5 * 2)',
