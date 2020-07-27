@@ -1,9 +1,9 @@
-const nthRoot = require('../../../lib/simplifyExpression/functionsSearch/nthRoot');
+const nthRoot = require('../../../lib/simplifyExpression/functionsSearch/nthRoot')
 
-const TestUtil = require('../../TestUtil');
+const TestUtil = require('../../TestUtil')
 
 function testNthRoot(exprString, outputStr) {
-  TestUtil.testSimplification(nthRoot, exprString, outputStr);
+  TestUtil.testSimplification(nthRoot, exprString, outputStr)
 }
 
 describe.skip('simplify nthRoot', function () {
@@ -27,13 +27,13 @@ describe.skip('simplify nthRoot', function () {
     ['nthRoot(2 * 18 * x ^ 2, 2)', '2 * 3 * x'],
     ['nthRoot(x * x, 2)', 'x'],
     ['nthRoot(x * x * (2 + 3), 2)', 'x * nthRoot((2 + 3), 2)'],
-  ];
-  tests.forEach(t => testNthRoot(t[0], t[1]));
-});
+  ]
+  tests.forEach(t => testNthRoot(t[0], t[1]))
+})
 
 function testNthRootSteps(exprString, outputList) {
-  const lastString = outputList[outputList.length - 1];
-  TestUtil.testSubsteps(nthRoot, exprString, outputList, lastString);
+  const lastString = outputList[outputList.length - 1]
+  TestUtil.testSubsteps(nthRoot, exprString, outputList, lastString)
 }
 
 describe.skip('nthRoot steps', function () {
@@ -67,6 +67,6 @@ describe.skip('nthRoot steps', function () {
         'nthRoot(2 ^ 2, 2) * nthRoot(3 ^ 2, 2) * nthRoot(x ^ 2, 2)',
         '2 * 3 * x']
     ]
-  ];
-  tests.forEach(t => testNthRootSteps(t[0], t[1]));
-});
+  ]
+  tests.forEach(t => testNthRootSteps(t[0], t[1]))
+})

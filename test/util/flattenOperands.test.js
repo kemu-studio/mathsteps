@@ -1,18 +1,18 @@
-const assert = require('assert');
-const {build:b} = require('math-nodes');
-const {parse, print} = require('math-parser');
+const assert = require('assert')
+const {build:b} = require('math-nodes')
+const {parse, print} = require('math-parser')
 
-const flattenOperands = require('../../lib/util/flattenOperands');
+const flattenOperands = require('../../lib/util/flattenOperands')
 
-function testFlatten(exprStr, afterNode, debug=false) {
+function testFlatten(exprStr, afterNode, debug = false) {
   it(`${exprStr} --> ${print(afterNode)}`, function() {
-    const flattened = flattenOperands(parse(exprStr));
+    const flattened = flattenOperands(parse(exprStr))
     if (debug) {
       // eslint-disable-next-line
       console.log(JSON.stringify(flattened, null, 4));
     }
-    assert.deepEqual(flattened, afterNode);
-  });
+    assert.deepEqual(flattened, afterNode)
+  })
 }
 
 describe('flattens + and *', function () {
@@ -46,9 +46,9 @@ describe('flattens + and *', function () {
         b.identifier('y'))
     ],
     ['3x*4x', b.mul(parse('3x'), parse('4x'))]
-  ];
-  tests.forEach(t => testFlatten(t[0], t[1]));
-});
+  ]
+  tests.forEach(t => testFlatten(t[0], t[1]))
+})
 
 describe('flattens division', function () {
   const tests = [
@@ -66,9 +66,9 @@ describe('flattens division', function () {
         b.div(parse('4x'), b.number('8'))
       )
     ],
-  ];
-  tests.forEach(t => testFlatten(t[0], t[1]));
-});
+  ]
+  tests.forEach(t => testFlatten(t[0], t[1]))
+})
 
 describe('subtraction', function () {
   const tests = [
@@ -91,7 +91,7 @@ describe('subtraction', function () {
         b.neg(parse('y+4'), {wasMinus: true})
       )
     ],
-  ];
-  tests.forEach(t => testFlatten(t[0], t[1]));
-});
+  ]
+  tests.forEach(t => testFlatten(t[0], t[1]))
+})
 

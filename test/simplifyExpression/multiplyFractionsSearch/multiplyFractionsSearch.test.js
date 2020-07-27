@@ -1,9 +1,9 @@
-const multiplyFractionsSearch = require('../../../lib/simplifyExpression//multiplyFractionsSearch');
+const multiplyFractionsSearch = require('../../../lib/simplifyExpression//multiplyFractionsSearch')
 
-const TestUtil = require('../../TestUtil');
+const TestUtil = require('../../TestUtil')
 
 function testMultiplyFractionsSearch(exprString, outputStr) {
-  TestUtil.testSimplification(multiplyFractionsSearch, exprString, outputStr);
+  TestUtil.testSimplification(multiplyFractionsSearch, exprString, outputStr)
 }
 
 describe.skip('multiplyFractions', function () {
@@ -11,6 +11,6 @@ describe.skip('multiplyFractions', function () {
     ['3 * 1/5 * 5/9', '(3 * 1 * 5) / (5 * 9)'],
     ['3/7 * 10/11', '(3 * 10) / (7 * 11)'],
     ['2 * 5/x', '(2 * 5) / x']
-  ];
-  tests.forEach(t => testMultiplyFractionsSearch(t[0], t[1]));
-});
+  ]
+  tests.forEach(t => testMultiplyFractionsSearch(t[0], t[1]))
+})
