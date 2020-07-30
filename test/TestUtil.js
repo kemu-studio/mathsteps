@@ -7,6 +7,11 @@ const print = require('../lib/util/print')
 // TestUtil contains helper methods to share code across tests
 const TestUtil = {}
 
+// Takes in an input string and returns a flattened and parsed node
+TestUtil.parseAndFlatten = function (exprString) {
+  return flatten(math.parse(exprString))
+}
+
 // Tests a function that takes an input string and check its output
 TestUtil.testFunctionOutput = function (fn, input, output) {
   it(input + ' -> ' + output,  () => {
@@ -27,7 +32,7 @@ TestUtil.testSimplification = function (simplifyingFunction, exprString,
   expectedOutputString) {
   it (exprString + ' -> ' + expectedOutputString,  () => {
     assert.deepEqual(
-      print(simplifyingFunction(flatten(math.parse(exprString))).newNode),
+      print.ascii(simplifyingFunction(flatten(math.parse(exprString))).newNode),
       expectedOutputString)
   })
 }
@@ -42,12 +47,12 @@ TestUtil.testSubsteps = function (fn, exprString, outputList,
     assert.deepEqual(substeps.length, outputList.length)
     substeps.forEach((step, i) => {
       assert.deepEqual(
-        print(step.newNode),
+        print.ascii(step.newNode),
         outputList[i])
     })
     if (outputStr) {
       assert.deepEqual(
-        print(status.newNode),
+        print.ascii(status.newNode),
         outputStr)
     }
   })

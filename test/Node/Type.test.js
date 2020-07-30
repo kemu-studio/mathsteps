@@ -43,10 +43,10 @@ describe('Node.Type works', function () {
       Node.Type.isOperator(math.parse('-x')),
       false)
   })
-  it('-x symbol', function () {
+  it('-x not symbol', function () {
     assert.deepEqual(
       Node.Type.isSymbol(math.parse('-x')),
-      true)
+      false)
   })
   it('y symbol', function () {
     assert.deepEqual(
@@ -132,6 +132,17 @@ describe('isFraction', function () {
       Node.CustomType.isFraction(math.parse('(2/3)')),
       true)
   })
+})
+
+// Tests imported from al_mixed_numbers
+describe('isMixedNumber', function () {
+  // Tests imported from al_mixed_numbers
+  // TODO: Review it.
+  const tests = [
+    ['5(1/6)'],
+    ['2(2/3)'],
+  ]
+  tests.forEach(t => assert(Node.Type.isMixedNumber(math.parse(t[0]))))
 })
 
 describe('getFraction', function () {

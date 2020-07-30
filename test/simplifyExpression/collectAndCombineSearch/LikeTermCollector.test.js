@@ -1,10 +1,10 @@
 const assert = require('assert')
-const math = require('mathjs')
 
-const flatten = require('../../../lib/util/flattenOperands')
 const print = require('../../../lib/util/print')
 
 const LikeTermCollector = require('../../../lib/simplifyExpression/collectAndCombineSearch/LikeTermCollector')
+
+const TestUtil = require('../../TestUtil')
 
 function testCollectLikeTerms(exprStr, outputStr, explanation = '', debug = false) {
   let description = `${exprStr} -> ${outputStr}`
@@ -14,8 +14,8 @@ function testCollectLikeTerms(exprStr, outputStr, explanation = '', debug = fals
   }
 
   it(description, () => {
-    const exprTree = flatten(math.parse(exprStr))
-    const collected = print(LikeTermCollector.collectLikeTerms(exprTree).newNode)
+    const exprTree = TestUtil.parseAndFlatten(exprStr)
+    const collected = print.ascii(LikeTermCollector.collectLikeTerms(exprTree).newNode)
     if (debug) {
       // eslint-disable-next-line
       console.log(collected);
@@ -32,7 +32,7 @@ function testCanCollectLikeTerms(exprStr, canCollect, explanation) {
   }
 
   it(description , () => {
-    const exprTree = flatten(math.parse(exprStr))
+    const exprTree = TestUtil.parseAndFlatten(exprStr)
     assert.equal(
       LikeTermCollector.canCollectLikeTerms(exprTree),
       canCollect)
@@ -47,6 +47,9 @@ describe('can collect like terms for addition', function () {
     ['(x+2+x)', false, 'because in parenthesis, need to be collected first'],
     ['x+2+x', true],
     ['x^2 + 5 + x + x^2', true],
+    ['nthRoot(2) + nthRoot(2)', false],
+    ['nthRoot(x, 2) + nthRoot(x, 2) + 5', true],
+    ['7x + nthRoot(3*x, 2) + nthRoot(3*x, 2)', true],
   ]
   tests.forEach(t => testCanCollectLikeTerms(t[0], t[1], t[2]))
 })
@@ -70,7 +73,10 @@ describe('basic addition collect like terms, no exponents or coefficients', func
     ['x + 4 + x + 2^x + 5', '(x + x) + (4 + 5) + 2^x',
       'because 2^x is an \'other\''],
     ['z + 2*(y + x) + 4 + z', '(z + z) + 4 + 2 * (y + x)',
-      '2*(y + x) is an \'other\' cause it has parens'],
+      ' 2*(y + x) is an \'other\' cause it has parens'],
+    ['nthRoot(2) + 100 + nthRoot(2)', '(nthRoot(2) + nthRoot(2)) + 100'],
+    ['y + nthRoot(x, 2) + 4y + nthRoot(x, 2)', '(nthRoot(x, 2) + nthRoot(x, 2)) + (y + 4y)'],
+    ['nthRoot(x, 2) + 2 + nthRoot(x, 2) + 5', '(nthRoot(x, 2) + nthRoot(x, 2)) + (2 + 5)'],
   ]
   tests.forEach(t => testCollectLikeTerms(t[0], t[1], t[2]))
 })
@@ -81,6 +87,8 @@ describe('collect like terms with exponents and coefficients', function() {
     ['y^2 + 5 + y^2 + 5', '(y^2 + y^2) + (5 + 5)'],
     ['y + 5 + z^2', 'y + 5 + z^2'],
     ['2x^2 + x + x^2 + 3x', '(2x^2 + x^2) + (x + 3x)'],
+    ['nthRoot(2)^3 + nthRoot(2)^3 - 6x', '(nthRoot(2)^3 + nthRoot(2)^3) - 6x'],
+    ['4x + 7 * nthRoot(11) - x - 2 * nthRoot(11)', '(7 * nthRoot(11) - 2 * nthRoot(11)) + (4x - x)'],
   ]
   tests.forEach(t => testCollectLikeTerms(t[0], t[1], t[2]))
 })
