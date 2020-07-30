@@ -6,7 +6,7 @@ function testSimplifyDivision(exprStr, outputStr) {
   TestUtil.testSimplification(divisionSearch, exprStr, outputStr)
 }
 
-describe.skip('simplifyDivision', function () {
+describe('simplifyDivision', function () {
   const tests = [
     ['6/x/5', '6 / (x * 5)'],
     ['-(6/x/5)', '-(6 / (x * 5))'],

@@ -6,9 +6,8 @@ function testIsPolynomialTerm(exprStr, isTerm) {
   TestUtil.testBooleanFunction(PolynomialTerm.isPolynomialTerm, exprStr, isTerm)
 }
 
-describe.skip('classifies symbol terms correctly', function() {
+describe('classifies symbol terms correctly', function() {
   const tests = [
-    ['x', true],
     ['x', true],
     ['x^2', true],
     ['y^55', true],

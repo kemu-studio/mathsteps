@@ -6,7 +6,7 @@ function testCanBeRearranged(expr, arrangeable) {
   TestUtil.testBooleanFunction(canRearrangeCoefficient, expr, arrangeable)
 }
 
-describe.skip('can rearrange coefficient', () => {
+describe('can rearrange coefficient', () => {
   const tests = [
     ['x*2', true],
     ['y^3 * 7', true]

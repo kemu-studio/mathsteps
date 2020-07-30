@@ -1,12 +1,13 @@
-const canAddLikeTermPolynomialNodes = require('../lib/checks/canAddLikeTermPolynomialNodes')
+const canAddLikeTerms = require('../lib/checks/canAddLikeTerms')
 
 const TestUtil = require('./TestUtil')
 
 function testCanBeAdded(expr, addable) {
-  TestUtil.testBooleanFunction(canAddLikeTermPolynomialNodes, expr, addable)
+  TestUtil.testBooleanFunction(
+    canAddLikeTerms.canAddLikeTermPolynomialNodes, expr, addable)
 }
 
-describe.skip('can add like term polynomials', () => {
+describe('can add like term polynomials', () => {
   const tests = [
     ['x^2 + x^2', true],
     ['x + x', true],

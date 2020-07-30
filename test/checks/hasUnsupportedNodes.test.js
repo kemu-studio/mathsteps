@@ -3,11 +3,12 @@ const math = require('mathjs')
 
 const checks = require('../../lib/checks')
 
-describe.skip('arithmetic stepping', function () {
+describe('arithmetic stepping', function () {
   it('4 + sqrt(16) no support for sqrt', function () {
     assert.deepEqual(
       checks.hasUnsupportedNodes(math.parse('4 + sqrt(4)')),
-      true)
+      /* KEMU OLD: true); */
+      /* KEMU NEW:*/ false)
   })
 
   it('x = 5 no support for assignment', function () {

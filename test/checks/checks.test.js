@@ -6,7 +6,7 @@ function testCanCombine(exprStr, canCombine) {
   TestUtil.testBooleanFunction(checks.canSimplifyPolynomialTerms, exprStr, canCombine)
 }
 
-describe.skip('canSimplifyPolynomialTerms multiplication', function() {
+describe('canSimplifyPolynomialTerms multiplication', function() {
   const tests = [
     ['x^2 * x * x', true],
     // false b/c coefficient
@@ -20,7 +20,7 @@ describe.skip('canSimplifyPolynomialTerms multiplication', function() {
 })
 
 
-describe.skip('canSimplifyPolynomialTerms addition', function() {
+describe('canSimplifyPolynomialTerms addition', function() {
   const tests = [
     ['x + x',  true],
     ['4y^2 + 7y^2 + y^2',  true],

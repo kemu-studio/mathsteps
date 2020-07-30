@@ -10,7 +10,7 @@ function testFactor(expressionString, outputStr, debug = false) {
   if (steps.length === 0) {
     lastStep = NO_STEPS
   } else {
-    lastStep = print(steps[steps.length - 1].newNode)
+    lastStep = print.ascii(steps[steps.length - 1].newNode)
   }
   it(expressionString + ' -> ' + outputStr, (done) => {
     assert.equal(lastStep, outputStr)
@@ -18,7 +18,7 @@ function testFactor(expressionString, outputStr, debug = false) {
   })
 }
 
-describe.skip('factor expressions', function () {
+describe('factor expressions', function () {
   const tests = [
     ['x^2', NO_STEPS],
     ['x^2 + 2x', 'x * (x + 2)'],
@@ -32,4 +32,3 @@ describe.skip('factor expressions', function () {
   ]
   tests.forEach(t => testFactor(t[0], t[1], t[2]))
 })
-

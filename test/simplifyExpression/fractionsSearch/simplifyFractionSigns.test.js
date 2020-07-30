@@ -6,7 +6,7 @@ function testSimplifyFractionSigns(exprStr, outputStr) {
   TestUtil.testSimplification(simplifyFractionSigns, exprStr, outputStr)
 }
 
-describe.skip('simplify signs', function() {
+describe('simplify signs', function() {
   const tests = [
     ['-12x / -27', '12x / 27'],
     ['x / -y', '-x / y'],
