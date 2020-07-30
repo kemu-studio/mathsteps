@@ -10,7 +10,7 @@ function testFactor(expressionString, outputStr, debug = false) {
   if (steps.length === 0) {
     lastStep = NO_STEPS
   } else {
-    lastStep = print.ascii(steps[steps.length - 1].newNode)
+    lastStep = print(steps[steps.length - 1].newNode)
   }
   it(expressionString + ' -> ' + outputStr, (done) => {
     assert.equal(lastStep, outputStr)
@@ -32,3 +32,4 @@ describe('factor expressions', function () {
   ]
   tests.forEach(t => testFactor(t[0], t[1], t[2]))
 })
+

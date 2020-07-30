@@ -8,7 +8,7 @@ const print = require('../lib/util/print')
 const TestUtil = {}
 
 // Takes in an input string and returns a flattened and parsed node
-TestUtil.parseAndFlatten = function (exprString) {
+TestUtil.flattenAndParse = function (exprString) {
   return flatten(math.parse(exprString))
 }
 
@@ -32,7 +32,7 @@ TestUtil.testSimplification = function (simplifyingFunction, exprString,
   expectedOutputString) {
   it (exprString + ' -> ' + expectedOutputString,  () => {
     assert.deepEqual(
-      print.ascii(simplifyingFunction(flatten(math.parse(exprString))).newNode),
+      print(simplifyingFunction(flatten(math.parse(exprString))).newNode),
       expectedOutputString)
   })
 }
@@ -47,12 +47,12 @@ TestUtil.testSubsteps = function (fn, exprString, outputList,
     assert.deepEqual(substeps.length, outputList.length)
     substeps.forEach((step, i) => {
       assert.deepEqual(
-        print.ascii(step.newNode),
+        print(step.newNode),
         outputList[i])
     })
     if (outputStr) {
       assert.deepEqual(
-        print.ascii(status.newNode),
+        print(status.newNode),
         outputStr)
     }
   })

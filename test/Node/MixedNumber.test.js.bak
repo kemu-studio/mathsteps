@@ -10,17 +10,17 @@ function testIsNegativeMixedNumber(input, output) {
 }
 
 function testGetWholeNumberValue(input, output) {
-  input = TestUtil.parseAndFlatten(input)
+  input = TestUtil.flattenAndParse(input)
   TestUtil.testFunctionOutput(MixedNumber.getWholeNumberValue, input, output)
 }
 
 function testGetNumeratorValue(input, output) {
-  input = TestUtil.parseAndFlatten(input)
+  input = TestUtil.flattenAndParse(input)
   TestUtil.testFunctionOutput(MixedNumber.getNumeratorValue, input, output)
 }
 
 function testGetDenominatorValue(input, output) {
-  input = TestUtil.parseAndFlatten(input)
+  input = TestUtil.flattenAndParse(input)
   TestUtil.testFunctionOutput(MixedNumber.getDenominatorValue, input, output)
 }
 
