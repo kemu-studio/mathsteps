@@ -10,6 +10,7 @@ describe('cancel like terms', function () {
   const tests = [
     ['2/2', '1'],
     ['x^2/x^2', '1'],
+
     ['x^3/x^2', 'x^(3 - (2))'], // parens will be removed at end of step
     ['(x^3*y)/x^2', '(x^(3 - (2)) * y)'],
     ['-(7+x)^8/(7+x)^2', '-(7 + x)^(8 - (2))'],
@@ -22,6 +23,7 @@ describe('cancel like terms', function () {
     ['(4x^3) / (5x^2)', '(4x^(3 - (2))) / (5)'],
     ['-x / -x', '1'],
     ['2/ (4x)', '1 / (2x)'],
+
     ['2/ (4x^2)', '1 / (2x^2)'],
     ['2 a / a', '2'],
     ['(35 * nthRoot (7)) / (5 * nthRoot(5))','(7 * nthRoot(7)) / nthRoot(5)'],
