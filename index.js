@@ -8,6 +8,9 @@ const printLatex = require('./lib/util/print').latex
 const math = require('mathjs')
 const removeUnnecessaryParens = require('./lib/util/removeUnnecessaryParens.js')
 
+const Equation       = require('./lib/kemuEquation/Equation')
+const EquationSolver = require('./lib/kemuEquation/EquationSolver')
+
 const CACHE_ENABLED             = true
 const CACHE_LOG_MISSING_ENABLED = false
 const CACHE_LOG_REUSED_ENABLED  = false
@@ -203,9 +206,16 @@ function isOkAsSymbolicExpression(expressionAsText) {
   return rv
 }
 
+function kemuSolveEquation(equationAsText, unknownVariableName) {
+  const equation = Equation.createFromString(equationAsText, unknownVariableName)
+  EquationSolver.solveEquation(equation)
+  return equation
+}
+
 module.exports = {
   simplifyExpression,
   solveEquation,
+  kemuSolveEquation,
   ChangeTypes,
   normalizeExpression,
   print,
