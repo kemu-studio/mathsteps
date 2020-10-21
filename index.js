@@ -203,9 +203,20 @@ function isOkAsSymbolicExpression(expressionAsText) {
   return rv
 }
 
+function kemuSolveEquation(options) {
+  const Equation       = require('./lib/kemuEquation/Equation')
+  const EquationSolver = require('./lib/kemuEquation/EquationSolver')
+
+  const equation = new Equation(options)
+  EquationSolver.solveEquation(equation)
+
+  return equation
+}
+
 module.exports = {
   simplifyExpression,
   solveEquation,
+  kemuSolveEquation,
   ChangeTypes,
   normalizeExpression,
   print,

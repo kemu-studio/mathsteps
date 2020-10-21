@@ -263,6 +263,8 @@ describe('kemu extensions', function() {
     ['2*5x^2 + sqrt(5)', '10x^2 + sqrt(5)'],
     ['5^2-4*sqrt(2)*(-8)', '25 + (32 * sqrt(2))'], // TODO: 25 + 32 * sqrt(2)
     ['2-3*sqrt(5)*(-4)', '2 + (12 * sqrt(5))'],    // TODO: 2 + 12 * sqrt(5)
+    ['1 - 1/2', '1/2'],
+    ['-20/9*q - 109/25', 'q * -20/9 - 109/25'],    // TODO: -20/9*q - 109/25
 
     // Sqrt from const (simple radicand).
     ['sqrt(0)', '0'],
