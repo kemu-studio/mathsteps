@@ -8,7 +8,7 @@ const EquationSolver = require('../../lib/kemuEquation/EquationSolver')
 
 const NO_STEPS = 'no-steps'
 
-function testSolve(equationString, outputStr, debug = false) {
+function testSolve(equationAsText, outputStr, debug = false) {
   /* OLD IMPLEMENTATION
   const steps = solveEquation(equationString, debug)
   let lastStep
@@ -26,11 +26,11 @@ function testSolve(equationString, outputStr, debug = false) {
 
   // TODO: Better unknown variable detect.
   const unknownVariable = outputStr[0]
-  const equation        = Equation.createFromString(equationString, unknownVariable)
+  const equation        = new Equation({equationAsText, unknownVariable})
 
   EquationSolver.solveEquation(equation)
 
-  it(equationString + ' -> ' + outputStr, (done) => {
+  it(equationAsText + ' -> ' + outputStr, (done) => {
     assert.equal(equation.getSolutionsAsText(), outputStr)
     done()
   })
