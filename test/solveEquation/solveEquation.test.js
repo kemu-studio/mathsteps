@@ -159,7 +159,7 @@ describe('solveEquation for =', function () {
     ['((1)/(2+1)) = ((1)/(3))', 'x = true'],
     ['-((1)/(3)) = ((-1)/(3))', 'x = true'],
     ['-x/2=3', 'x = -6'],
-    // TODO: ['-(x/2)=3', 'x = -6'], (bad result)
+    ['-(x/2)=3', 'x = -6'],
     ['44x=2.74', 'x = 137/2200'],
 
     // Possible improvement: Possibility to point unknown variable directly?
