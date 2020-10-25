@@ -43,7 +43,6 @@ describe('solveEquation for =', function () {
     // can't solve this because we don't deal with inequalities yet
     // See: https://www.cymath.com/answer.php?q=(%20x%20)%2F(%202x%20%2B%207)%20%3E%3D%204
     // TODO: ['( x )/( 2x + 7) >= 4', ''], (Handle unequalities)
-
     ['y - x - 2 = 3*2', 'y = 8 + x'],
     ['2y - x - 2 = x', 'y = x + 1'],
     ['x = 1', 'x = 1'],
@@ -86,9 +85,9 @@ describe('solveEquation for =', function () {
     ['x^2 - 4 = 0', 'x = [-2, 2]'],
 
     // Perfect square
-    ['x^2 + 2x + 1 = 0', 'x = [-1, -1]'],
-    ['x^2 + 4x + 4 = 0', 'x = [-2, -2]'],
-    ['x^2 - 6x + 9 = 0', 'x = [3, 3]'],
+    ['x^2 + 2x + 1 = 0', 'x = -1'],
+    ['x^2 + 4x + 4 = 0', 'x = -2'],
+    ['x^2 - 6x + 9 = 0', 'x = 3'],
     ['(x + 4)^2 = 0', 'x = -4'],
     ['(x - 5)^2 = 0', 'x = 5'],
 
@@ -98,14 +97,14 @@ describe('solveEquation for =', function () {
     ['16y^2 - 25 = 0', 'y = [-5/4, 5/4]'],
 
     // Some weird edge cases (we only support a leading term with coeff 1)
-    ['x * x + 12x + 36 = 0', 'x = [-6, -6]'],
-    ['x * x - 2x + 1 = 0', 'x = [1, 1]'],
+    ['x * x + 12x + 36 = 0', 'x = -6'],
+    ['x * x - 2x + 1 = 0', 'x = 1'],
     ['0 = x^2 + 3x + 2', 'x = [-2, -1]'],
     ['0 = x * x + 3x + 2', 'x = [-2, -1]'],
-    ['x * x + (x + x) + 1 = 0', 'x = [-1, -1]'],
-    ['0 = x * x + (x + x) + 1', 'x = [-1, -1]'],
-    ['(x^3 / x) + (3x - x) + 1 = 0', 'x = [-1, -1]'],
-    ['0 = (x^3 / x) + (3x - x) + 1', 'x = [-1, -1]'],
+    ['x * x + (x + x) + 1 = 0', 'x = -1'],
+    ['0 = x * x + (x + x) + 1', 'x = -1'],
+    ['(x^3 / x) + (3x - x) + 1 = 0', 'x = -1'],
+    ['0 = (x^3 / x) + (3x - x) + 1', 'x = -1'],
 
     // Solve for roots before expanding
     ['2^7 (x + 2) = 0', 'x = -2'],
@@ -138,12 +137,11 @@ describe('solveEquation for =', function () {
     // 1 test case from https://github.com/google/mathsteps/tree/al_distribute_over_mult
     // Thanks to Lili Dworkin (https://github.com/ldworkin)
     ['x - 3.4= ( x - 2.5)/( 1.3)', 'x = 32/5'],
-
     ['2/x = 1', 'x = 2'],
     ['2/(4x) = 1', 'x = 1/2'],
     ['2/(8 - 4x) = 1/2', 'x = 1'],
     ['2/(1 + 1 + 4x) = 1/3', 'x = 1'],
-    // TODO: ['(3 + x) / (x^2 + 3) = 1', 'x = [0, 1]'], (unsolved)
+    // TODO: ['(3 + x) / (x^2 + 3) = 1', 'x = [0, 1]'], (Unsolved)
     ['6/x + 8/(2x) = 10', 'x = 1'],
 
     // Imported from https://github.com/florisdf/mathsteps/blob/master/test/solveEquation/solveEquation.test.js
@@ -163,8 +161,8 @@ describe('solveEquation for =', function () {
     ['44x=2.74', 'x = 137/2200'],
 
     // Possible improvement: Possibility to point unknown variable directly?
-    // TODO: ['(x + y) (y + 2) = 0', 'x = -y'], (unsolved)
-    ['(y + x) (y + 2) = 0', 'y = [-x, -2]'], // Solve for y
+    // TODO: ['(x + y) (y + 2) = 0', 'x = -y'], // Solve for x (first found symbol)
+    ['(y + x) (y + 2) = 0', 'y = [-x, -2]'],    // Solve for y (first found symbol)
 
     // Possible improvement: Skip repeated solutions.
     ['((x-2)^2) = 0', 'x = 2'],
@@ -175,10 +173,9 @@ describe('solveEquation for =', function () {
 
     ['x^6 - x = 0', 'x = [0, 1]'],
     ['4x^2 - 25y^2 = 0', 'x = [y * -5/2, 5y / 2]'],
-    ['(x^2 + 2x + 1) (x^2 + 3x + 2) = 0', 'x = [-1, -1, -2, -1]'],
+    ['(x^2 + 2x + 1) (x^2 + 3x + 2) = 0', 'x = [-1, -2, -1]'],
     ['(2x^2 - 1)(x^2 - 5)(x^2 + 5) = 0', 'x = [-1 / sqrt(2), 1 / sqrt(2), -sqrt(5), sqrt(5)]'],
-    // TODO: Too many steps: ['(-x ^ 2 - 4x + 2)(-3x^2 - 6x + 3) = 0', ''],
-    // TODO: ['x^2 = -2x - 1', 'x = [-1, -1]'], (unsolved)
+    // TODO: ['x^2 = -2x - 1', 'x = [-1, -1]'], (Unsolved)
     ['x - 3.4= ( x - 2.5)/( 1.3)', 'x = 32/5']
   ]
 
