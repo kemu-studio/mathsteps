@@ -1,4 +1,4 @@
-const removeMultiplicationByOne = require('../../../lib/simplifyExpression/basicsSearch/removeMultiplicationByOne')
+const removeMultiplicationByOne = require('../../../lib/simplifyExpression/basicsSearch/obsolete/removeMultiplicationByOne')
 
 const testSimplify = require('./testSimplify')
 

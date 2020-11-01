@@ -101,7 +101,7 @@ describe('stepThrough returning no steps', function() {
 })
 
 describe('keeping parens in important places, on printing', function() {
-  testOneStep('5 + (3*6) + 2 / (x / y)', '5 + (3 * 6) + 2 * y / x')
+  testOneStep('5 + (3*6) + 2 / (x / y)', '5 + 18 + 2 / (x / y)')
   testOneStep('-(x + y) + 5+3', '8 - (x + y)')
 })
 

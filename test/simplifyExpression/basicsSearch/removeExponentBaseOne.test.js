@@ -1,4 +1,4 @@
-const removeExponentBaseOne = require('../../../lib/simplifyExpression/basicsSearch/removeExponentBaseOne')
+const removeExponentBaseOne = require('../../../lib/simplifyExpression/basicsSearch/obsolete/removeExponentBaseOne')
 
 const testSimplify = require('./testSimplify')
 

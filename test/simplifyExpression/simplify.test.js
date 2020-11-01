@@ -7,6 +7,7 @@ const simplify = require('../../lib/simplifyExpression/simplify')
 
 function testSimplify(exprStr, outputStr, debug = false, ctx) {
   it(exprStr + ' -> ' + outputStr, function () {
+    this.timeout(10000)
     assert.deepEqual(
       print.ascii(simplify(math.parse(exprStr), debug, ctx)),
       outputStr)
@@ -381,7 +382,7 @@ describe('kemu extensions', function() {
     ['(x^2 * 3x * y^2)^3', '27x^9 * y^6'],
     // When terms are polynomials or power nodes
     ['((x + 1)^2 (x + 1)^2)^2', 'x^8 + 8x^7 + 28x^6 + 56x^5 + 70x^4 + 56x^3 + 28x^2 + 8x + 1'],
-    ['((x + y)^3 * (x + 1))^3', '(x^9 + 9y * x^8 + 36x^7 * y^2 + 84x^6 * y^3 + 126x^5 * y^4 + 126x^4 * y^5 + 84x^3 * y^6 + 36x^2 * y^7 + 9x * y^8 + y^9) * x^3 + 3 * (x + y)^9 * x^2 + 3x * (x^3 + 3y * x^2 + 3x * y^2 + y^3) * (x^6 + 6y * x^5 + 15x^4 * y^2 + 20x^3 * y^3 + 15x^2 * y^4 + 6x * y^5 + y^6) + x^9 + 9y * x^8 + 36x^7 * y^2 + 84x^6 * y^3 + 126x^5 * y^4 + 126x^4 * y^5 + 84x^3 * y^6 + 36x^2 * y^7 + 9x * y^8 + y^9'],
+    ['((x + y)^3 * (x + 1))^3', '(x^9 + 9y * x^8 + 36x^7 * y^2 + 84x^6 * y^3 + 126x^5 * y^4 + 126x^4 * y^5 + 84x^3 * y^6 + 36x^2 * y^7 + 9x * y^8 + y^9) * x^3 + 3 * (x^9 + 9y * x^8 + 36x^7 * y^2 + 84x^6 * y^3 + 126x^5 * y^4 + 126x^4 * y^5 + 84x^3 * y^6 + 36x^2 * y^7 + 9x * y^8 + y^9) * x^2 + 3x * (x^3 + 3y * x^2 + 3x * y^2 + y^3) * (x^6 + 6y * x^5 + 15x^4 * y^2 + 20x^3 * y^3 + 15x^2 * y^4 + 6x * y^5 + y^6) + x^9 + 9y * x^8 + 36x^7 * y^2 + 84x^6 * y^3 + 126x^5 * y^4 + 126x^4 * y^5 + 84x^3 * y^6 + 36x^2 * y^7 + 9x * y^8 + y^9'],
     // TODO: ['((x + 1) (y + 1) (z + 1))^2', '(x + 1)^2 * (y + 1)^2 * (z + 1)^2'],
 
     // When terms are division nodes
