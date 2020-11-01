@@ -145,7 +145,7 @@ function _parseTextInternal(text) {
   let rv = _removeObviousParentheses(math.parse(text))
 
   // Make sure we store all constant nodes as bignumber to avoid fake unequals.
-  simplifyCommon.kemuNormalizeConstantNodes(rv)
+  rv = simplifyCommon.kemuNormalizeConstantNodes(rv)
 
   return rv
 }
