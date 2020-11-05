@@ -1,4 +1,4 @@
-const addConstantFractions = require('../../../lib/simplifyExpression/fractionsSearch/addConstantFractions')
+const addConstantFractions = require('../../../lib/simplifyExpression/fractionsSearch/obsolete/addConstantFractions')
 
 const TestUtil = require('../../TestUtil')
 

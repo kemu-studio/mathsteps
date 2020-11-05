@@ -1,4 +1,4 @@
-const simplifyFractionSigns = require('../../../lib/simplifyExpression/fractionsSearch/simplifyFractionSigns')
+const simplifyFractionSigns = require('../../../lib/simplifyExpression/fractionsSearch/obsolete/simplifyFractionSigns')
 
 const TestUtil = require('../../TestUtil')
 

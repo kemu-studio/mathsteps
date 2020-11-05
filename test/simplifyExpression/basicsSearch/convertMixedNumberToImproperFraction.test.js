@@ -1,5 +1,5 @@
 const convertMixedNumberToImproperFraction = require(
-  '../../../lib/simplifyExpression/basicsSearch/convertMixedNumberToImproperFraction')
+  '../../../lib/simplifyExpression/basicsSearch/obsolete/convertMixedNumberToImproperFraction')
 
 const TestUtil = require('../../TestUtil')
 
