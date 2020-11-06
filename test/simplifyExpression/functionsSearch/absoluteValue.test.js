@@ -1,4 +1,4 @@
-const absoluteValue = require('../../../lib/simplifyExpression/functionsSearch/absoluteValue')
+const absoluteValue = require('../../../lib/simplifyExpression/functionsSearch/obsolete/absoluteValue')
 
 const TestUtil = require('../../TestUtil')
 
