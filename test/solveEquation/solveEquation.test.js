@@ -44,7 +44,7 @@ function testSolve(equationAsText, outputStr, debug = false) {
 
 describe('solveEquation for =', function () {
   const tests = [
-    ['g *( x ) = ( x - 4) ^ ( 2) - 3', 'g = 13 / x + x - 8'],
+    ['g *( x ) = ( x - 4) ^ ( 2) - 3', 'g = x + 13 / x - 8'],
 
     // can't solve this because we don't deal with inequalities yet
     // See: https://www.cymath.com/answer.php?q=(%20x%20)%2F(%202x%20%2B%207)%20%3E%3D%204
@@ -136,7 +136,7 @@ describe('solveEquation for =', function () {
     ['(y + 1)^2 = 1', 'y = [-2, 0]'],
     ['(y + 1)^3 = 8', 'y = 1'],
     ['(2x + 1)^3 = 1', 'x = 0'],
-    ['(3x + 2)^2 = 2', 'x = [-sqrt(2) / 3 - 2/3, sqrt(2) / 3 - 2/3]'],
+    ['(3x + 2)^2 = 2', 'x = [-sqrt(2) / 3 - 2/3, -2/3 + sqrt(2) / 3]'], // TODO: [-sqrt(2) / 3 - 2/3, sqrt(2) / 3 - 2/3]'],
     ['(3x + 2)^2 + 2 = 1', 'x = false'],
     // -------------------------------------------------------------------------
 
