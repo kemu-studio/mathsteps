@@ -18,8 +18,42 @@ describe('simplify (basics)', function () {
   // Imported from https://github.com/google/mathsteps/tree/division.
   // Thanks to Anthony Liang (https://github.com/aliang8)
   const tests = [
+    // Arithmetics with zero
     ['x + 0', 'x'],
     ['2 * 0 * x', '0'],
+    ['(x+3)^0', '1'],
+    ['0 x', '0'],
+    ['2*0*z^2','0'],
+    ['0/5', '0'],
+    ['0/(x+6+7+x^2+2^y)', '0'],
+    ['2+0+x', 'x + 2'],
+    ['2+x+0', 'x + 2'],
+    ['0+2+x', 'x + 2'],
+
+    // Arithmetic with one.
+    ['x/1', 'x'],
+    ['1^3', '1'],
+    ['1^x', '1'],
+    ['x^1', 'x'],
+    ['1^(2 + 3 + 5/4 + 7 - 6/7)', '1'],
+    ['x*1', 'x'],
+    ['1x', 'x'],
+    ['1*z^2', 'z^2'],
+    ['2*1*z^2', '2z^2'],
+
+
+    // Arithmetic with minus one.
+    ['-1*x', '-x'],
+    ['x^2*-1', '-x^2'],
+    ['2x*2*-1', '-4x'],
+
+    // Rearrange coefficients
+    ['2 * x^2', '2x^2'],
+    ['y^3 * 5', '5y^3'],
+
+    // Remove unary minus.
+    ['--5', '5'],
+    ['--x', 'x'],
   ]
   tests.forEach(t => testSimplify(t[0], t[1], t[2]))
 })
