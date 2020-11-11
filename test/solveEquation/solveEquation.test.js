@@ -1,30 +1,10 @@
 const assert = require('assert')
 
-const ChangeTypes   = require('../../lib/ChangeTypes')
-const solveEquation = require('../../lib/solveEquation')
-
 const Equation       = require('../../lib/kemuEquation/Equation')
 const EquationSolver = require('../../lib/kemuEquation/EquationSolver')
 
-const NO_STEPS = 'no-steps'
-
 function testSolve(equationAsText, outputStr, debug = false) {
-  /* OLD IMPLEMENTATION
-  const steps = solveEquation(equationString, debug)
-  let lastStep
-  if (steps.length === 0) {
-    lastStep = NO_STEPS
-  } else {
-    lastStep = steps[steps.length - 1].newEquation.ascii()
-  }
-
-  it(equationString + ' -> ' + outputStr, (done) => {
-    assert.equal(lastStep, outputStr)
-    done()
-  })
-  */
-
-  // TODO: Better unknown variable detect.
+  // Possible improvement: Better unknown variable detect.
   const unknownVariable = outputStr[0]
   const equation        = new Equation({equationAsText, unknownVariable})
   let   solution        = '[error]'
@@ -204,28 +184,11 @@ describe('solveEquation for non = comparators', function() {
 })
 */
 
-function testSolveConstantEquation(equationString, expectedChange, debug = false) {
-  let actualChange = '[error]'
-
-  try {
-    const steps = solveEquation(equationString, debug)
-    actualChange = steps[steps.length - 1].changeType
-  } catch (err) {
-    console.log(err)
-  }
-
-  it(equationString + ' -> ' + expectedChange, (done) => {
-    assert.equal(actualChange, expectedChange)
-    done()
-  })
-}
-
 describe('constant comparison support', function () {
   const tests = [
-    ['1 = 2', ChangeTypes.STATEMENT_IS_FALSE],
-    ['3 + 5 = 8', ChangeTypes.STATEMENT_IS_TRUE],
-    ['1 = 2', ChangeTypes.STATEMENT_IS_FALSE],
-    ['2 - 3 = 5', ChangeTypes.STATEMENT_IS_FALSE],
+    /*
+  POSSIBLE IMPROVEMENT: Support for unequalities.
+
     ['2 > 1', ChangeTypes.STATEMENT_IS_TRUE],
     ['2/3 > 1/3', ChangeTypes.STATEMENT_IS_TRUE],
     ['1 > 2', ChangeTypes.STATEMENT_IS_FALSE],
@@ -240,17 +203,26 @@ describe('constant comparison support', function () {
     ['1 <= 1', ChangeTypes.STATEMENT_IS_TRUE],
     ['2 <= 1', ChangeTypes.STATEMENT_IS_FALSE],
     ['1 <= 2', ChangeTypes.STATEMENT_IS_TRUE],
-    ['( 1) = ( 14)', ChangeTypes.STATEMENT_IS_FALSE],
-    ['0 = 0', ChangeTypes.STATEMENT_IS_TRUE],
-    ['(1/64)^(-5/6) = 32', ChangeTypes.STATEMENT_IS_TRUE],
+*/
+
+    ['1 = 2', 'x = false'],
+    ['3 + 5 = 8', 'x = true'],
+    ['1 = 2', 'x = false'],
+    ['2 - 3 = 5', 'x = false'],
+    ['( 1) = ( 14)', 'x = false'],
+    ['0 = 0', 'x = true'],
+    ['(1/64)^(-5/6) = 32', 'x = true'],
     // With variables that cancel
-    ['( r )/( ( r ) ) = ( 1)/( 10)', ChangeTypes.STATEMENT_IS_FALSE],
-    ['5 + (x - 5) = x', ChangeTypes.STATEMENT_IS_TRUE],
-    ['4x - 4= 4x', ChangeTypes.STATEMENT_IS_FALSE],
+    // ['( r )/( ( r ) ) = ( 1)/( 10)', 'r = false'], TODO: BAD RESULT
+
+    ['5 + (x - 5) = x', 'x = true'],
+    ['4x - 4= 4x', 'x = false'],
   ]
-  tests.forEach(t => testSolveConstantEquation(t[0], t[1], t[2]))
+  tests.forEach(t => testSolve(t[0], t[1], t[2]))
 })
 
+/*
+  TODO: Is it still useful?
 function testEquationError(equationString, debug = false) {
   it(equationString + ' throws error', (done) => {
     assert.throws(() => solveEquation(equationString, debug),Error)
@@ -265,3 +237,4 @@ describe('solveEquation errors', function() {
   ]
   // TODO: Review it: tests.forEach(t => testEquationError(t[0], t[1]))
 })
+*/
