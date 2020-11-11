@@ -58,6 +58,16 @@ describe('simplify (basics)', function () {
     // Simplify signs.
     ['-12x / -27', '4/9*x'], // TODO: 4/9x
     ['x / -y', '-x / y'],
+
+    // Division.
+    ['6/x/5', '6 / (5x)'],
+    ['-(6/x/5)', '-6 / (5x)'],
+    ['-6/x/5', '-6 / (5x)'],
+    ['(2+2)/x/6/(y-z)','2 / (3x * (y - z))'],
+    ['2/x', '2 / x'],
+    ['x/(2/3)', '3/2*x'], // TODO: 3/2x
+    ['x / (y/(z+a))', 'x * z / y + a * x / y'],
+    ['x/((2+z)/(3/y))', 'x / (y / 3 * z + 2/3*y)'], // TODO
   ]
   tests.forEach(t => testSimplify(t[0], t[1], t[2]))
 })
@@ -69,6 +79,10 @@ describe('simplify (arithmetic)', function () {
     ['5*(2+2)*10', '200'],
     ['(2+(2)+7)', '11'],
     ['(8-2) * 2^2 * (1+1) / (4 /2) / 5', '24/5'],
+
+    // Absolute value.
+    ['abs(4)', '4'],
+    ['abs(-5)', '5'],
   ]
   tests.forEach(t => testSimplify(t[0], t[1], t[2]))
 })
