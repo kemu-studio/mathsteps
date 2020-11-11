@@ -54,6 +54,10 @@ describe('simplify (basics)', function () {
     // Remove unary minus.
     ['--5', '5'],
     ['--x', 'x'],
+
+    // Simplify signs.
+    ['-12x / -27', '4/9*x'], // TODO: 4/9x
+    ['x / -y', '-x / y'],
   ]
   tests.forEach(t => testSimplify(t[0], t[1], t[2]))
 })

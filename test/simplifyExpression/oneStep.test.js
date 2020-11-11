@@ -1,7 +1,5 @@
 const assert = require('assert')
-
 const print = require('../../lib/util/print')
-
 const ChangeTypes = require('../../lib/ChangeTypes')
 const simplifyExpression = require('../../lib/simplifyExpression')
 
