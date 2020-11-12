@@ -1,4 +1,4 @@
-const removeAdditionOfZero = require('../../../lib/simplifyExpression/basicsSearch/removeAdditionOfZero')
+const removeAdditionOfZero = require('../../../lib/simplifyExpression/basicsSearch/obsolete/removeAdditionOfZero')
 
 const testSimplify = require('./testSimplify')
 

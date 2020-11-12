@@ -1,4 +1,4 @@
-const removeDivisionByOne = require('../../../lib/simplifyExpression/basicsSearch/removeDivisionByOne')
+const removeDivisionByOne = require('../../../lib/simplifyExpression/basicsSearch/obsolete/removeDivisionByOne')
 
 const testSimplify = require('./testSimplify')
 

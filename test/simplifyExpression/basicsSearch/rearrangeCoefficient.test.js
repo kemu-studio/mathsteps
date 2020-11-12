@@ -1,4 +1,4 @@
-const rearrangeCoefficient = require('../../../lib/simplifyExpression/basicsSearch/rearrangeCoefficient')
+const rearrangeCoefficient = require('../../../lib/simplifyExpression/basicsSearch/obsolete/rearrangeCoefficient')
 
 const testSimplify = require('./testSimplify')
 

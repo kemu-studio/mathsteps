@@ -27,23 +27,29 @@ function testSolve(equationAsText, outputStr, debug = false) {
   // TODO: Better unknown variable detect.
   const unknownVariable = outputStr[0]
   const equation        = new Equation({equationAsText, unknownVariable})
+  let   solution        = '[error]'
 
-  EquationSolver.solveEquation(equation)
+  try {
+    EquationSolver.solveEquation(equation)
+    solution = equation.getSolutionsAsText()
+  } catch (err) {
+    console.log(err)
+  }
 
   it(equationAsText + ' -> ' + outputStr, (done) => {
-    assert.equal(equation.getSolutionsAsText(), outputStr)
+    assert.equal(solution, outputStr)
     done()
   })
 }
 
 describe('solveEquation for =', function () {
   const tests = [
-    ['g *( x ) = ( x - 4) ^ ( 2) - 3', 'g = x - 8 + 13 / x'],
+    ['g *( x ) = ( x - 4) ^ ( 2) - 3', 'g = x + 13 / x - 8'],
 
     // can't solve this because we don't deal with inequalities yet
     // See: https://www.cymath.com/answer.php?q=(%20x%20)%2F(%202x%20%2B%207)%20%3E%3D%204
     // TODO: ['( x )/( 2x + 7) >= 4', ''], (Handle unequalities)
-    ['y - x - 2 = 3*2', 'y = 8 + x'],
+    ['y - x - 2 = 3*2', 'y = x + 8'],
     ['2y - x - 2 = x', 'y = x + 1'],
     ['x = 1', 'x = 1'],
     ['2 = x', 'x = 2'],
@@ -64,7 +70,7 @@ describe('solveEquation for =', function () {
 
     // 2 test cases from al_distribute_over_mult
     ['(2x^2 - 1)(x^2 - 5)(x^2 + 5) = 0', 'x = [-1 / sqrt(2), 1 / sqrt(2), -sqrt(5), sqrt(5)]'],
-    ['(-x ^ 2 - 4x + 2)(-3x^2 - 6x + 3) = 0', 'x = [-2 + sqrt(6), -2 + (-sqrt(6)), -1 + sqrt(2), -1 + (-sqrt(2))]'],
+    ['(-x ^ 2 - 4x + 2)(-3x^2 - 6x + 3) = 0', 'x = [-2 + sqrt(6), -2 - sqrt(6), -1 + sqrt(2), -1 - sqrt(2)]'],
 
     ['5x + (1/2)x = 27 ', 'x = 54/11'],
     ['2x/3 = 2x - 4 ', 'x = 3'],
@@ -130,7 +136,7 @@ describe('solveEquation for =', function () {
     ['(y + 1)^2 = 1', 'y = [-2, 0]'],
     ['(y + 1)^3 = 8', 'y = 1'],
     ['(2x + 1)^3 = 1', 'x = 0'],
-    ['(3x + 2)^2 = 2', 'x = [-sqrt(2) / 3 - 2/3, sqrt(2) / 3 - 2/3]'],
+    ['(3x + 2)^2 = 2', 'x = [-sqrt(2) / 3 - 2/3, -2/3 + sqrt(2) / 3]'], // TODO: [-sqrt(2) / 3 - 2/3, sqrt(2) / 3 - 2/3]'],
     ['(3x + 2)^2 + 2 = 1', 'x = false'],
     // -------------------------------------------------------------------------
 
@@ -172,7 +178,7 @@ describe('solveEquation for =', function () {
     ['x * x * (x - 5)^2 = 0', 'x = [0, 0, 5]'],
 
     ['x^6 - x = 0', 'x = [0, 1]'],
-    ['4x^2 - 25y^2 = 0', 'x = [y * -5/2, 5y / 2]'],
+    ['4x^2 - 25y^2 = 0', 'x = [-5/2*y, 5y / 2]'],
     ['(x^2 + 2x + 1) (x^2 + 3x + 2) = 0', 'x = [-1, -2, -1]'],
     ['(2x^2 - 1)(x^2 - 5)(x^2 + 5) = 0', 'x = [-1 / sqrt(2), 1 / sqrt(2), -sqrt(5), sqrt(5)]'],
     // TODO: ['x^2 = -2x - 1', 'x = [-1, -1]'], (Unsolved)
@@ -199,8 +205,15 @@ describe('solveEquation for non = comparators', function() {
 */
 
 function testSolveConstantEquation(equationString, expectedChange, debug = false) {
-  const steps = solveEquation(equationString, debug)
-  const actualChange = steps[steps.length - 1].changeType
+  let actualChange = '[error]'
+
+  try {
+    const steps = solveEquation(equationString, debug)
+    actualChange = steps[steps.length - 1].changeType
+  } catch (err) {
+    console.log(err)
+  }
+
   it(equationString + ' -> ' + expectedChange, (done) => {
     assert.equal(actualChange, expectedChange)
     done()

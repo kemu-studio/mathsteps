@@ -1,4 +1,4 @@
-const simplifyDoubleUnaryMinus = require('../../../lib/simplifyExpression/basicsSearch/simplifyDoubleUnaryMinus')
+const simplifyDoubleUnaryMinus = require('../../../lib/simplifyExpression/basicsSearch/obsolete/simplifyDoubleUnaryMinus')
 
 const testSimplify = require('./testSimplify')
 

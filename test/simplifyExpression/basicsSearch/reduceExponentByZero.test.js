@@ -1,4 +1,4 @@
-const reduceExponentByZero = require('../../../lib/simplifyExpression/basicsSearch/reduceExponentByZero')
+const reduceExponentByZero = require('../../../lib/simplifyExpression/basicsSearch/obsolete/reduceExponentByZero')
 
 const testSimplify = require('./testSimplify')
 

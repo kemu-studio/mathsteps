@@ -1,4 +1,4 @@
-const divisionSearch = require('../../../lib/simplifyExpression/divisionSearch')
+const divisionSearch = require('../../../lib/simplifyExpression/obsolete/divisionSearch')
 
 const TestUtil = require('../../TestUtil')
 

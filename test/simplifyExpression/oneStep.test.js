@@ -58,7 +58,7 @@ describe('arithmetic stepping', function() {
 describe('adding symbols without breaking things', function() {
   // nothing old breaks
   const tests = [
-    ['2+x', '2 + x'],
+    ['2+x', 'x + 2'],
     ['(2+2)*x', '4x'],
     ['(2+2)*x+3', '4x + 3'],
   ]
@@ -76,9 +76,9 @@ describe('collecting like terms within the context of the stepper', function() {
 describe('collects and combines like terms', function() {
   const tests = [
     ['(x + x) + (x^2 + x^2)', '2x + (x^2 + x^2)'], // substeps not tested here
-    ['10 + (y^2 + y^2)', '10 + 2y^2'],             // substeps not tested here
+    ['10 + (y^2 + y^2)', '2y^2 + 10'],             // substeps not tested here
     ['10y^2 + 1/2*y^2 + 3/2*y^2', '12y^2'],        // substeps not tested here
-    ['x + y + y^2', 'x + y + y^2'],
+    ['x + y + y^2', 'y^2 + x + y'],
     ['2x^(2+1)', '2x^3'],
   ]
   tests.forEach(t => testOneStep(t[0], t[1]))
@@ -101,7 +101,7 @@ describe('stepThrough returning no steps', function() {
 })
 
 describe('keeping parens in important places, on printing', function() {
-  testOneStep('5 + (3*6) + 2 / (x / y)', '5 + (3 * 6) + 2 * y / x')
+  testOneStep('5 + (3*6) + 2 / (x / y)', '5 + 18 + 2 / (x / y)')
   testOneStep('-(x + y) + 5+3', '8 - (x + y)')
 })
 

@@ -7,6 +7,7 @@ const print = require('./lib/util/print').ascii
 const printLatex = require('./lib/util/print').latex
 const math = require('mathjs')
 const removeUnnecessaryParens = require('./lib/util/removeUnnecessaryParens.js')
+const simplifyCommon = require('./lib/simplifyExpression/_common')
 
 const CACHE_ENABLED             = true
 const CACHE_LOG_MISSING_ENABLED = false
@@ -140,6 +141,15 @@ function convertTextToTeX(text) {
   return rv
 }
 
+function _parseTextInternal(text) {
+  let rv = _removeObviousParentheses(math.parse(text))
+
+  // Make sure we store all constant nodes as bignumber to avoid fake unequals.
+  rv = simplifyCommon.kemuNormalizeConstantNodes(rv)
+
+  return rv
+}
+
 function parseText(text) {
   let rv = null
 
@@ -152,18 +162,20 @@ function parseText(text) {
         console.log('[ KMATHSTEPS ] Cache missing (text to node)', text)
       }
 
-      rv = _removeObviousParentheses(math.parse(text))
+      rv = _parseTextInternal(text)
 
       CACHE_TEXT_TO_NODE[text] = rv
+
     } else {
       // Already cached - reuse previous result.
       if (CACHE_LOG_REUSED_ENABLED) {
         console.log('[ KMATHSTEPS ] Cache reused (text to node)', text)
       }
     }
+
   } else {
     // Cache disabled - just wrap original call.
-    rv = _removeObviousParentheses(math.parse(text))
+    rv = _parseTextInternal(text)
   }
 
   return rv
