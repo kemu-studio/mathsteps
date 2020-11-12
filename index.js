@@ -1,7 +1,6 @@
 const ChangeTypes = require('./lib/ChangeTypes')
 const Node = require('./lib/node')
 const stepThrough = require('./lib/simplifyExpression/stepThrough')
-const solveEquation = require('./lib/solveEquation')
 const normalizeExpression = require('./lib/util/normalizeExpression')
 const print = require('./lib/util/print').ascii
 const printLatex = require('./lib/util/print').latex
@@ -223,6 +222,13 @@ function kemuSolveEquation(options) {
   EquationSolver.solveEquation(equation)
 
   return equation
+}
+
+function solveEquation(x) {
+  if (typeof(x) !== 'object') {
+    throw 'error: options object expected'
+  }
+  return kemuSolveEquation(x)
 }
 
 module.exports = {

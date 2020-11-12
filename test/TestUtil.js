@@ -1,8 +1,9 @@
 const assert = require('assert')
-const math = require('mathjs')
+const math   = require('mathjs')
 
-const flatten = require('../lib/util/flattenOperands')
-const print = require('../lib/util/print')
+const flatten   = require('../lib/util/flattenOperands')
+const print     = require('../lib/util/print')
+const mathsteps = require('../index.js')
 
 // TestUtil contains helper methods to share code across tests
 const TestUtil = {}
@@ -55,6 +56,24 @@ TestUtil.testSubsteps = function (fn, exprString, outputList,
         print.ascii(status.newNode),
         outputStr)
     }
+  })
+}
+
+TestUtil.testSimplifySteps = function (exprString, expectedSteps) {
+  it (exprString + ' -> ' + expectedSteps[expectedSteps.length - 1].expr,  () => {
+    const steps = mathsteps.simplifyExpression(exprString)
+
+    console.log('STEPS          :', steps)
+    console.log('EXPECTED STEPS :', expectedSteps)
+
+    assert.deepEqual(steps.length, expectedSteps.length)
+
+    steps.forEach((oneStep, idx) => {
+      console.log(oneStep, expectedSteps[idx])
+
+      assert.deepEqual(print.ascii(oneStep.newNode),    expectedSteps[idx].expr)
+      assert.deepEqual(print.ascii(oneStep.changeType), expectedSteps[idx].changeType)
+    })
   })
 }
 

@@ -23,23 +23,22 @@ const mathsteps = require('mathsteps');
 const steps = mathsteps.simplifyExpression('2x + 2x + x + x');
 
 steps.forEach(step => {
-	console.log("before change: " + step.oldNode.toString());   // before change: 2 x + 2 x + x + x
-	console.log("change: " + step.changeType);                  // change: ADD_POLYNOMIAL_TERMS
-	console.log("after change: " + step.newNode.toString());    // after change: 6 x
-	console.log("# of substeps: " + step.substeps.length);      // # of substeps: 3
+        console.log("before change: " + step.oldNode.toString());   // before change: 2 x + 2 x + x + x
+        console.log("change: " + step.changeType);                  // change: ADD_POLYNOMIAL_TERMS
+        console.log("after change: " + step.newNode.toString());    // after change: 6 x
+        console.log("# of substeps: " + step.substeps.length);      // # of substeps: 3
 });
 ```
 
 To solve an equation:
 ```js
-const steps = mathsteps.solveEquation('2x + 3x = 35');
-
-steps.forEach(step => {
-    console.log("before change: " + step.oldEquation.ascii());  // e.g. before change: 2x + 3x = 35
-    console.log("change: " + step.changeType);                  // e.g. change: SIMPLIFY_LEFT_SIDE
-    console.log("after change: " + step.newEquation.ascii());   // e.g. after change: 5x = 35
-    console.log("# of substeps: " + step.substeps.length);      // e.g. # of substeps: 2
-});
+const result = mathsteps.solveEquation({
+  equationAsText: '2x + 3x = 35',
+  unknownVariable: 'x',
+  onStepCb: function(step) {
+    console.log(`[ ${step.equation.getId()} ] ${step.stepId} | ${step.equation}`)
+  }
+})
 ```
 
 (if you're using mathsteps v0.1.6 or lower, use `.print()` instead of `.ascii()`)

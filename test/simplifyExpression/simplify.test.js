@@ -18,8 +18,56 @@ describe('simplify (basics)', function () {
   // Imported from https://github.com/google/mathsteps/tree/division.
   // Thanks to Anthony Liang (https://github.com/aliang8)
   const tests = [
+    // Arithmetics with zero
     ['x + 0', 'x'],
     ['2 * 0 * x', '0'],
+    ['(x+3)^0', '1'],
+    ['0 x', '0'],
+    ['2*0*z^2','0'],
+    ['0/5', '0'],
+    ['0/(x+6+7+x^2+2^y)', '0'],
+    ['2+0+x', 'x + 2'],
+    ['2+x+0', 'x + 2'],
+    ['0+2+x', 'x + 2'],
+
+    // Arithmetic with one.
+    ['x/1', 'x'],
+    ['1^3', '1'],
+    ['1^x', '1'],
+    ['x^1', 'x'],
+    ['1^(2 + 3 + 5/4 + 7 - 6/7)', '1'],
+    ['x*1', 'x'],
+    ['1x', 'x'],
+    ['1*z^2', 'z^2'],
+    ['2*1*z^2', '2z^2'],
+
+
+    // Arithmetic with minus one.
+    ['-1*x', '-x'],
+    ['x^2*-1', '-x^2'],
+    ['2x*2*-1', '-4x'],
+
+    // Rearrange coefficients
+    ['2 * x^2', '2x^2'],
+    ['y^3 * 5', '5y^3'],
+
+    // Remove unary minus.
+    ['--5', '5'],
+    ['--x', 'x'],
+
+    // Simplify signs.
+    ['-12x / -27', '4/9*x'], // TODO: 4/9x
+    ['x / -y', '-x / y'],
+
+    // Division.
+    ['6/x/5', '6 / (5x)'],
+    ['-(6/x/5)', '-6 / (5x)'],
+    ['-6/x/5', '-6 / (5x)'],
+    ['(2+2)/x/6/(y-z)','2 / (3x * (y - z))'],
+    ['2/x', '2 / x'],
+    ['x/(2/3)', '3/2*x'], // TODO: 3/2x
+    ['x / (y/(z+a))', 'x * z / y + a * x / y'],
+    ['x/((2+z)/(3/y))', 'x / (y / 3 * z + 2/3*y)'], // TODO
   ]
   tests.forEach(t => testSimplify(t[0], t[1], t[2]))
 })
@@ -31,6 +79,10 @@ describe('simplify (arithmetic)', function () {
     ['5*(2+2)*10', '200'],
     ['(2+(2)+7)', '11'],
     ['(8-2) * 2^2 * (1+1) / (4 /2) / 5', '24/5'],
+
+    // Absolute value.
+    ['abs(4)', '4'],
+    ['abs(-5)', '5'],
   ]
   tests.forEach(t => testSimplify(t[0], t[1], t[2]))
 })

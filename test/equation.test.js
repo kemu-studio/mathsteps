@@ -1,3 +1,6 @@
+/*
+  TODO: Similar tests for kemuEquation?
+
 const assert = require('assert')
 const math = require('mathjs')
 
@@ -52,3 +55,4 @@ describe('Latex printer', () => {
   ]
   tests.forEach(t => testLatexprint(t[0], t[1], t[2], t[3]))
 })
+*/
