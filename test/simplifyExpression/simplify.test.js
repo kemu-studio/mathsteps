@@ -56,7 +56,7 @@ describe('simplify (basics)', function () {
     ['--x', 'x'],
 
     // Simplify signs.
-    ['-12x / -27', '4/9*x'], // TODO: 4/9x
+    ['-12x / -27', '4/9x'], // TODO: 4/9x
     ['x / -y', '-x / y'],
 
     // Division.
@@ -65,9 +65,9 @@ describe('simplify (basics)', function () {
     ['-6/x/5', '-6 / (5x)'],
     ['(2+2)/x/6/(y-z)','2 / (3x * (y - z))'],
     ['2/x', '2 / x'],
-    ['x/(2/3)', '3/2*x'], // TODO: 3/2x
+    ['x/(2/3)', '3/2x'],
     ['x / (y/(z+a))', 'x * z / y + a * x / y'],
-    ['x/((2+z)/(3/y))', 'x / (y / 3 * z + 2/3*y)'], // TODO
+    ['x/((2+z)/(3/y))', 'x / (y / 3 * z + 2/3y)'], // TODO
   ]
   tests.forEach(t => testSimplify(t[0], t[1], t[2]))
 })
@@ -112,7 +112,7 @@ describe('can simplify with division', function () {
     ['2x * y / z * 10', '20x * y / z'],
     ['2x * 4x / 5 * 10 + 3', '16x^2 + 3'],
     ['2x/x', '2'],
-    ['2x/4/3', '1/6*x'],
+    ['2x/4/3', '1/6x'],
     ['((2+x)(3+x))/(2+x)', 'x + 3'],
   ]
   tests.forEach(t => testSimplify(t[0], t[1], t[2]))
@@ -138,7 +138,7 @@ describe('subtraction support', function() {
 describe('support for more * and ( that come from latex conversion', function () {
   const tests = [
     ['(3*x)*(4*x)', '12x^2'],
-    ['(12*z^(2))/27', '4/9*z^2'],
+    ['(12*z^(2))/27', '4/9z^2'],
     ['x^2 - 12x^2 + 5x^2 - 7', '-6x^2 - 7'],
     ['-(12 x ^ 2)', '-12x^2']
   ]
@@ -205,8 +205,8 @@ describe('distribution', function () {
 
 describe('fractions', function() {
   const tests = [
-    ['5x + (1/2)x', '11/2*x'],
-    ['x + x/2', '3/2*x'],
+    ['5x + (1/2)x', '11/2x'],
+    ['x + x/2', '3/2x'],
     ['1 + 1/2', '3/2'],
     ['2 + 5/2 + 3', '15/2'],
     ['9/18-5/18', '2/9'],
@@ -214,7 +214,7 @@ describe('fractions', function() {
     ['(2 / x) * x', '2'],
     ['5/18 - 9/18', '-2/9'],
     ['9/18', '1/2'],
-    ['x/(2/3) + 5', '3/2*x + 5'],
+    ['x/(2/3) + 5', '3/2x + 5'],
     ['(2+x)/6', 'x / 6 + 1/3']
   ]
   tests.forEach(t => testSimplify(t[0], t[1], t[2]))
@@ -234,7 +234,7 @@ describe('cancelling out', function() {
     ['((2x^3 y^2)/(-x^2 y^5))^(-2)', 'y^6 / (4x^2)'],
     ['(1+2a)/a', '1 / a + 2'],
     ['(x ^ 4 * y + -(x ^ 2 * y ^ 2)) / (-x ^ 2 * y)', '-x^2 + y'],
-    ['6 / (2x^2)', '3 / (x^2)'],
+    ['6 / (2x^2)', '3 / x^2'],
   ]
   tests.forEach(t => testSimplify(t[0], t[1], t[2]))
 })
@@ -244,7 +244,7 @@ describe('absolute value support', function() {
     ['(x^3*y)/x^2 + abs(-5)', 'x * y + 5'],
     ['-6 + -5 - abs(-4) + -10 - 3 abs(-4)', '-37'],
     ['5*abs((2+2))*10', '200'],
-    ['5x + (1/abs(-2))x', '11/2*x'],
+    ['5x + (1/abs(-2))x', '11/2x'],
     ['abs(5/18-abs(9/-18))', '2/9'],
     // handle parens around abs()
     ['( abs( -3) )/(3)', '1'],
@@ -313,8 +313,8 @@ describe('kemu extensions', function() {
     ['sqrt(pi^2)', 'pi'],
     ['sqrt(pi^6)', 'pi^3'],
     ['2*5x^2 + sqrt(5)', '10x^2 + sqrt(5)'],
-    ['5^2-4*sqrt(2)*(-8)', '25 + (32 * sqrt(2))'], // TODO: 25 + 32 sqrt(2)
-    ['2-3*sqrt(5)*(-4)', '2 + (12 * sqrt(5))'],    // TODO: 2 + 12 sqrt(5)
+    ['5^2-4*sqrt(2)*(-8)', '25 + 32 * sqrt(2)'], // TODO: 25 + 32 sqrt(2)
+    ['2-3*sqrt(5)*(-4)', '2 + 12 * sqrt(5)'],    // TODO: 2 + 12 sqrt(5)
     ['1 - 1/2', '1/2'],
     ['-20/9*q - 109/25', '-20/9*q - 109/25'],
 
@@ -329,12 +329,12 @@ describe('kemu extensions', function() {
     ['sqrt(434957043)', '12041 * sqrt(3)'],
 
     // Sqrt from const (complex radicand).
-    ['sqrt(2x)', 'sqrt(2 x)'],
+    ['sqrt(2x)', 'sqrt(2x)'],
     ['sqrt(4x)', '2 * sqrt(x)'],
-    ['sqrt(12x)', '2 * sqrt(3 x)'],
-    ['sqrt(434957043*x)', '12041 * sqrt(3 x)'],
+    ['sqrt(12x)', '2 * sqrt(3x)'],
+    ['sqrt(434957043*x)', '12041 * sqrt(3x)'],
     ['sqrt(x * 4 * y)', '2 * sqrt(x * y)'],
-    ['sqrt(x * 434957043 * y)', '12041 * sqrt(3 x * y)'],
+    ['sqrt(x * 434957043 * y)', '12041 * sqrt(3x * y)'],
 
     // Multiply order: Nothing changed
     ['x', 'x'],
@@ -437,11 +437,11 @@ describe('kemu extensions', function() {
     // TODO: ['((x + 1) (y + 1) (z + 1))^2', '(x + 1)^2 * (y + 1)^2 * (z + 1)^2'],
 
     // When terms are division nodes
-    ['(x/y)^2', 'x^2 / (y^2)'],
+    ['(x/y)^2', 'x^2 / y^2'],
     ['(2/3)^2', '4/9'],
     ['(-5/6)^2', '25/36'],
     ['((-5x)/7)^3', '-125x^3 / 343'],
-    ['((2x)/y)^3', '8x^3 / (y^3)'],
+    ['((2x)/y)^3', '8x^3 / y^3'],
     ['((4x)/(5y))^3', '64x^3 / (125y^3)'],
 
     // Combination of terms
