@@ -1,15 +1,13 @@
 const assert = require('assert')
-const math = require('mathjs')
-
+const mathsteps = require('../../index.js')
 const print = require('../../lib/util/print')
-
 const simplify = require('../../lib/simplifyExpression/simplify')
 
 function testSimplify(exprStr, outputStr, debug = false, ctx) {
   it(exprStr + ' -> ' + outputStr, function () {
     this.timeout(10000)
     assert.deepEqual(
-      print.ascii(simplify(math.parse(exprStr), debug, ctx)),
+      print.ascii(simplify(mathsteps.parseText(exprStr), debug, ctx)),
       outputStr)
   })
 }

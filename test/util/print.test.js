@@ -1,8 +1,6 @@
-const math = require('mathjs')
-
 const Node = require('../../lib/node')
 const print = require('../../lib/util/print')
-
+const mathsteps = require('../../index.js')
 const TestUtil = require('../TestUtil')
 
 // to create nodes, for testing
@@ -11,7 +9,7 @@ const constNode = Node.Creator.constant
 const symbolNode = Node.Creator.symbol
 
 function testPrintStr(exprStr, outputStr) {
-  const input = math.parse(exprStr)
+  const input = mathsteps.parseText(exprStr)
   TestUtil.testFunctionOutput(print.ascii, input, outputStr)
 }
 
