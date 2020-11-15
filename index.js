@@ -1,10 +1,10 @@
+const {math} = require('./config')
 const ChangeTypes = require('./lib/ChangeTypes')
 const Node = require('./lib/node')
 const stepThrough = require('./lib/simplifyExpression/stepThrough')
 const normalizeExpression = require('./lib/util/normalizeExpression')
 const print = require('./lib/util/print').ascii
 const printLatex = require('./lib/util/print').latex
-const math = require('mathjs')
 const removeUnnecessaryParens = require('./lib/util/removeUnnecessaryParens.js')
 const simplifyCommon = require('./lib/simplifyExpression/_common')
 
