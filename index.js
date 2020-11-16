@@ -245,4 +245,5 @@ module.exports = {
   convertTextToTeX,
   parseText,
   isOkAsSymbolicExpression,
+  Node
 }
