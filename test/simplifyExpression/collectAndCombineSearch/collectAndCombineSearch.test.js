@@ -13,17 +13,17 @@ function testSimpleCollectAndCombineSearch(exprString, outputStr) {
 describe('combineNthRoots multiplication', function() {
   const tests = [
     ['nthRoot(x, 2) * nthRoot(x, 2) * nthRoot(x, 3)',
-      ['(nthRoot(x, 2) * nthRoot(x, 2)) * nthRoot(x, 3)',
+      ['nthRoot(x, 2) * nthRoot(x, 2) * nthRoot(x, 3)',
         'sqrt(x * x) * nthRoot(x, 3)'],
     ],
     ['nthRoot(x, 2) * nthRoot(x, 2) * nthRoot(x, 3) * 3',
-      ['3 * (nthRoot(x, 2) * nthRoot(x, 2)) * nthRoot(x, 3)',
+      ['3 * nthRoot(x, 2) * nthRoot(x, 2) * nthRoot(x, 3)',
         '3 * sqrt(x * x) * nthRoot(x, 3)'],
     ],
     ['nthRoot(2x, 2) * nthRoot(2x, 2) * nthRoot(y, 4) * nthRoot(y^3, 4)',
-      ['(nthRoot(2 x, 2) * nthRoot(2 x, 2)) * (nthRoot(y, 4) * nthRoot(y ^ 3, 4))',
-        'sqrt(2 x * 2 x) * (nthRoot(y, 4) * nthRoot(y ^ 3, 4))',
-        'sqrt(2 x * 2 x) * nthRoot(y * y ^ 3, 4)'],
+      ['nthRoot(2x, 2) * nthRoot(2x, 2) * nthRoot(y, 4) * nthRoot(y^3, 4)',
+        'sqrt(2x * 2x) * nthRoot(y, 4) * nthRoot(y^3, 4)',
+        'sqrt(2x * 2x) * nthRoot(y * y^3, 4)'],
     ],
     ['nthRoot(x) * nthRoot(x)',
       [],
@@ -35,7 +35,7 @@ describe('combineNthRoots multiplication', function() {
     ],
     ['nthRoot(5) * sqrt(9x)',
       [],
-      'sqrt(5 * 9 x)'
+      'sqrt(5 * 9x)'
     ]
   ]
   tests.forEach(t => testCollectAndCombineSubsteps(t[0], t[1], t[2]))
@@ -54,8 +54,8 @@ describe('combinePolynomialTerms multiplication', function() {
         'y^4'],
     ],
     ['2x * x^2 * 5x',
-      ['(2 * 5) * (x * x^2 * x)',
-        '10 * (x * x^2 * x)',
+      ['2 * 5 * x * x^2 * x',
+        '10 * x * x^2 * x',
         '10x^4'],
       '10x^4'
     ],
@@ -76,7 +76,7 @@ describe('combinePolynomialTerms addition', function() {
         '12y^2']
     ],
     ['2x + 4x + y',
-      ['(2x + 4x) + y',
+      ['2x + 4x + y',
         '6x + y'],
       '6x + y'
     ],
@@ -97,8 +97,8 @@ describe('combineNthRootTerms addition', function() {
         '12 * nthRoot(2)^2']
     ],
     ['10nthRoot(5y) - 2nthRoot(5y)',
-      ['(10 - 2) * nthRoot(5 y)',
-        '8 * nthRoot(5 y)'],
+      ['(10 - 2) * nthRoot(5y)',
+        '8 * nthRoot(5y)'],
     ],
   ]
   tests.forEach(t => testCollectAndCombineSubsteps(t[0], t[1]))

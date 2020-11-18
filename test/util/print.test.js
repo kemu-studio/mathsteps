@@ -1,8 +1,6 @@
-const math = require('mathjs')
-
 const Node = require('../../lib/node')
 const print = require('../../lib/util/print')
-
+const mathsteps = require('../../index.js')
 const TestUtil = require('../TestUtil')
 
 // to create nodes, for testing
@@ -11,7 +9,7 @@ const constNode = Node.Creator.constant
 const symbolNode = Node.Creator.symbol
 
 function testPrintStr(exprStr, outputStr) {
-  const input = math.parse(exprStr)
+  const input = mathsteps.parseText(exprStr)
   TestUtil.testFunctionOutput(print.ascii, input, outputStr)
 }
 
@@ -27,8 +25,8 @@ function testPrintNode(node, outputStr) {
 describe('print asciimath', function () {
   const tests = [
     ['2+3+4', '2 + 3 + 4'],
-    ['2 + (4 - x) + - 4', '2 + (4 - x) - 4'],
-    ['2/3 x^2', '2/3*x^2'],
+    ['2 + (4 - x) + - 4', '2 + 4 - x - 4'],
+    ['2/3 x^2', '2/3x^2'],
     ['-2/3', '-2/3'],
   ]
   tests.forEach(t => testPrintStr(t[0], t[1]))
@@ -37,10 +35,10 @@ describe('print asciimath', function () {
 describe('print latex', function() {
   const tests = [
     ['2+3+4', '2+3+4'],
-    ['2 + (4 - x) - 4', '2+\\left(4 -  x\\right) - 4'],
-    ['2/3 x^2', '\\frac{2}{3}~{ x}^{2}'],
+    ['2 + (4 - x) - 4', '2+4-x-4'],
+    ['2/3 x^2', '\\frac{2}{3}~x^{2}'],
     ['-2/3', '\\frac{-2}{3}'],
-    ['2*x+4y', '2~ x+4~ y'],
+    ['2*x+4y', '2~x+4~y'],
   ]
   tests.forEach(t => testLatexPrintStr(t[0],t[1]))
 })
