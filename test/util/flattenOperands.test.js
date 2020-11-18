@@ -156,8 +156,6 @@ describe('flattens nested functions', function () {
         nthRootNode(constNode(11)),
         parenNode(opNode('+', [symbolNode('x'), symbolNode('y')]))
       ])
-
-      // math.parse('nthRoot(11) * (x+y)')
     ],
 
     ['abs(3)(1+2)',

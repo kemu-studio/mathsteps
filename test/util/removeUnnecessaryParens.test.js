@@ -1,12 +1,10 @@
-const math = require('mathjs')
-
+const mathsteps = require('../../index.js')
 const print = require('../../lib/util/print')
 const removeUnnecessaryParens = require('../../lib/util/removeUnnecessaryParens')
-
 const TestUtil = require('../TestUtil')
 
 function testRemoveUnnecessaryParens(exprStr, outputStr) {
-  const input = removeUnnecessaryParens(math.parse(exprStr))
+  const input = removeUnnecessaryParens(mathsteps.parseText(exprStr))
   TestUtil.testFunctionOutput(print.ascii, input, outputStr)
 }
 
@@ -20,7 +18,7 @@ describe('removeUnnecessaryParens', function () {
     ['((3 - 5)) * x', '(3 - 5) * x'],
     ['((3 - 5)) * x', '(3 - 5) * x'],
     ['(((-5)))', '-5'],
-    ['((4+5)) + ((2^3))', '(4 + 5) + 2^3'],
+    ['((4+5)) + ((2^3))', '4 + 5 + 2^3'],
     ['(2x^6 + -50 x^2) - (x^4)', '2x^6 - 50x^2 - x^4'],
     ['(x+4) - (12 + x)', 'x + 4 - (12 + x)'],
     ['(2x)^2', '(2x)^2'],
