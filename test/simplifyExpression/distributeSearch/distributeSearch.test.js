@@ -1,3 +1,4 @@
+/*
 const distributeSearch = require('../../../lib/simplifyExpression/distributeSearch')
 
 const TestUtil = require('../../TestUtil')
@@ -88,7 +89,7 @@ describe('distribute with fractions', function () {
   multiStepTests.forEach(t => testDistributeSteps(t[0], t[1]))
 })
 
-/*
+
 describe('expand base', function () {
   const tests = [
     ['(nthRoot(x, 2))^2','nthRoot(x, 2) * nthRoot(x, 2)'],

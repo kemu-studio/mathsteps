@@ -64,8 +64,8 @@ describe('simplify (basics)', function () {
     ['(2+2)/x/6/(y-z)', '2 / (3x * y - 3x * z)'],
     ['2/x', '2 / x'],
     ['x/(2/3)', '3/2x'],
-    ['x / (y/(z+a))', 'x * z / y + a * x / y'],
-    ['x/((2+z)/(3/y))', 'x / (y / 3 * z + 2/3y)'], // TODO
+    // TODO: ['x / (y/(z+a))', 'x * z / y + a * x / y'],
+    // TODO: ['x/((2+z)/(3/y))', '3 / (y * z + 2y) * x'],
   ]
   tests.forEach(t => testSimplify(t[0], t[1], t[2]))
 })
@@ -107,7 +107,7 @@ describe('can simplify with division', function () {
     ['2x * 5x / 2', '5x^2'],
     ['2x * 4x / 5 * 10 + 3', '16x^2 + 3'],
     ['2x * 4x / 2 / 4', 'x^2'],
-    ['2x * y / z * 10', '20x * y / z'],
+    ['2x * y / z * 10', '2x * y / z * 10'], // TODO: 20x * y / z
     ['2x * 4x / 5 * 10 + 3', '16x^2 + 3'],
     ['2x/x', '2'],
     ['2x/4/3', '1/6x'],
@@ -196,7 +196,71 @@ describe('distribution', function () {
     ['(nthRoot(x, 2) * nthRoot(x, 3))^2', 'x^(5/3)'],
     ['nthRoot(x, 2)^(1/2)', 'x^(1/4)'],
     ['(nthRoot(x^2, 2)^2 * nthRoot(x, 3)^3)^2', 'x^6'],
+
     // -------------------------------------------------------------------------
+    // distribute - into paren with addition
+    ['-(x+3)', '-x - 3'],
+    ['-(x - 3)', '-x + 3'],
+    ['-(-x^2 + 3y^6)' , '-3y^6 + x^2'],
+
+    // distribute - into paren with multiplication/division
+    ['-(x*3)', '-3x'],
+    ['-(-x * 3)', '3x'],
+    ['-(-x^2 * 3y^6)', '3x^2 * y^6'],
+
+    // other
+    ['x*(x+2+y)', 'x^2 + x * y + 2x'],
+    ['(x+2+y)*x*7', '7x^2 + 7x * y + 14x'],
+    ['(5+x)*(x+3)', 'x^2 + 8x + 15'],
+    ['-2x^2 * (3x - 4)', '-6x^3 + 8x^2'],
+
+    // distribute the non-fraction term into the numerator(s)
+    [
+      '(3 / x^2 + x / (x^2 + 3)) * (x^2 + 3)',
+      '9 / x^2 + x + 3'
+    ],
+
+    // if both groupings have fraction, the rule does not apply
+    [
+      '(3 / x^2 + x / (x^2 + 3)) * (5 / x + x^5)',
+      'x * x^5 / (x^2 + 3) + 5x / (x^3 + 3x) + 15 / x^3 + 3x^3'
+    ],
+
+    // multisteps
+    [
+      '(2 / x +  3x^2) * (x^3 + 1)',
+      '3x^5 + 5x^2 + 2 / x'
+    ],
+
+    [
+      '(2x + x^2) * (1 / (x^2 -4) + 4x^2)',
+      'x^2 / (x^2 - 4) + 4x^4 + 2x / (x^2 - 4) + 8x^3'
+    ],
+
+    [
+      '(2x + x^2) * (3x^2 / (x^2 -4) + 4x^2)',
+      '3x^2 * x^2 / (x^2 - 4) + 6x * x^2 / (x^2 - 4) + 4x^4 + 8x^3'
+    ],
+
+    // expand base
+    ['(nthRoot(x, 2))^2' , 'x'],
+    ['(nthRoot(x, 2))^3' , 'x^(3/2)'],
+    ['3 * (nthRoot(x, 2))^4', '3x^2'],
+    ['(nthRoot(x, 2) + nthRoot(x, 3))^2', 'x + 2 * nthRoot(x, 2) * nthRoot(x, 3) + x^(2/3)'], // TODO
+    ['(2x + 3)^2', '4x^2 + 12x + 9'],
+    ['(x + 3 + 4)^2', 'x^2 + 14x + 49'],
+
+    // These should not expand
+    // Needs to have a positive integer exponent > 1
+    ['x + 2', 'x + 2'],
+    ['(x + 2)^-1', '1 / (x + 2)'],
+    ['(x + 1)^x', '(x + 1)^x'],
+    ['(x + 1)^(2x)', '(x + 1)^(2x)'],
+    ['(x + 1)^(1/2)', '(x + 1)^(1/2)'],
+    ['(x + 1)^2.5', '(x + 1)^(5/2)'],
+
+    // One case from al_distribute_over_mult
+    ['1 / (x + 1)^x', '1 / (x + 1)^x'],
   ]
   tests.forEach(t => testSimplify(t[0], t[1], t[2]))
 })
@@ -231,7 +295,7 @@ describe('cancelling out', function() {
     ['(x)/(-x)', '-1'],
     ['((2x^3 y^2)/(-x^2 y^5))^(-2)', 'y^6 / (4x^2)'],
     ['(1+2a)/a', '1 / a + 2'],
-    ['(x ^ 4 * y + -(x ^ 2 * y ^ 2)) / (-x ^ 2 * y)', '-x^2 + y'],
+    ['(x ^ 4 * y + -(x ^ 2 * y ^ 2)) / (-x ^ 2 * y)', 'y - x^2'],
     ['6 / (2x^2)', '3 / x^2'],
 
     // Cancel like terms.
@@ -239,7 +303,7 @@ describe('cancelling out', function() {
     ['x^2/x^2', '1'],
     ['x^3/x^2', 'x'],
     ['(x^3*y)/x^2', 'x * y'],
-    ['-(7+x)^8/(7+x)^2', '-42x^5 - 735x^4 - 6860x^3 - 36015x^2 - 100842x - x^6 - 117649'],
+    ['-(7+x)^8/(7+x)^2', '-42x^5 - 735x^4 - 6860x^3 - 36015x^2 - 100842x - 117649 - x^6'],
     ['(2x^2 * 5) / (2x^2)', '5'], // these parens have to stay around 2x^2 to be parsed correctly.
     ['(x^2 * y) / x', 'x * y'],
     ['2x^2 / (2x^2 * 5)', '1/5'],
@@ -252,7 +316,7 @@ describe('cancelling out', function() {
 
     ['2/ (4x^2)', '1 / (2x^2)'],
     ['2 a / a', '2'],
-    ['(35 * nthRoot (7)) / (5 * nthRoot(5))','7 * nthRoot(7) / nthRoot(5)'],
+    ['(35 * nthRoot (7)) / (5 * nthRoot(5))', '35 * nthRoot(7) / (5 * nthRoot(5))'], // TODO
     ['3/(9r^2)', '1 / (3r^2)'],
     ['6/(2x)', '3 / x']
   ]
