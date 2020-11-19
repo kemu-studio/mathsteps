@@ -233,6 +233,28 @@ describe('cancelling out', function() {
     ['(1+2a)/a', '1 / a + 2'],
     ['(x ^ 4 * y + -(x ^ 2 * y ^ 2)) / (-x ^ 2 * y)', '-x^2 + y'],
     ['6 / (2x^2)', '3 / x^2'],
+
+    // Cancel like terms.
+    ['2/2', '1'],
+    ['x^2/x^2', '1'],
+    ['x^3/x^2', 'x'],
+    ['(x^3*y)/x^2', 'x * y'],
+    ['-(7+x)^8/(7+x)^2', '-42x^5 - 735x^4 - 6860x^3 - 36015x^2 - 100842x - x^6 - 117649'],
+    ['(2x^2 * 5) / (2x^2)', '5'], // these parens have to stay around 2x^2 to be parsed correctly.
+    ['(x^2 * y) / x', 'x * y'],
+    ['2x^2 / (2x^2 * 5)', '1/5'],
+    ['x / (x^2*y)', '1 / (x * y)'],
+    ['(4x^2) / (5x^2)', '4/5'],
+    ['(2x+5)^8 / (2x+5)^2', '64x^6 + 960x^5 + 6000x^4 + 20000x^3 + 37500x^2 + 37500x + 15625'],
+    ['(4x^3) / (5x^2)', '4x / 5'], // TODO: 4/5 x
+    ['-x / -x', '1'],
+    ['2/ (4x)', '1 / (2x)'],
+
+    ['2/ (4x^2)', '1 / (2x^2)'],
+    ['2 a / a', '2'],
+    ['(35 * nthRoot (7)) / (5 * nthRoot(5))','7 * nthRoot(7) / nthRoot(5)'],
+    ['3/(9r^2)', '1 / (3r^2)'],
+    ['6/(2x)', '3 / x']
   ]
   tests.forEach(t => testSimplify(t[0], t[1], t[2]))
 })
@@ -343,6 +365,13 @@ describe('kemu extensions', function() {
     ['y x', 'x * y'],
     ['y z x a', 'a * x * y * z'],
     ['y z * 4 * x a', '4a * x * y * z'],
+
+    // Collects and combines like terms
+    ['(x + x) + (x^2 + x^2)', '2x^2 + 2x'],
+    ['10 + (y^2 + y^2)', '2y^2 + 10'],
+    ['10y^2 + 1/2*y^2 + 3/2*y^2', '12y^2'],
+    ['x + y + y^2', 'y^2 + x + y'],
+    ['2x^(2+1)', '2x^3'],
 
     // Collect like terms with mixed symbols (xy like)
     ['x y + x y', '2x * y'],

@@ -10,7 +10,7 @@ const TestUtil = {}
 
 // Takes in an input string and returns a flattened and parsed node
 TestUtil.parseAndFlatten = function (exprString) {
-  return flatten(math.parse(exprString))
+  return flatten(mathsteps.parseText(exprString))
 }
 
 // Tests a function that takes an input string and check its output
@@ -23,7 +23,7 @@ TestUtil.testFunctionOutput = function (fn, input, output) {
 // tests a function that takes in a node and returns a boolean value
 TestUtil.testBooleanFunction = function (simplifier, exprString, expectedBooleanValue) {
   it(exprString + ' ' + expectedBooleanValue, () => {
-    const inputNode = flatten(math.parse(exprString))
+    const inputNode = flatten(mathsteps.parseText(exprString))
     assert.equal(simplifier(inputNode),expectedBooleanValue)
   })
 }
@@ -33,7 +33,7 @@ TestUtil.testSimplification = function (simplifyingFunction, exprString,
   expectedOutputString) {
   it (exprString + ' -> ' + expectedOutputString,  () => {
     assert.deepEqual(
-      print.ascii(simplifyingFunction(flatten(math.parse(exprString))).newNode),
+      print.ascii(simplifyingFunction(flatten(mathsteps.parseText(exprString))).newNode),
       expectedOutputString)
   })
 }
@@ -42,7 +42,7 @@ TestUtil.testSimplification = function (simplifyingFunction, exprString,
 TestUtil.testSubsteps = function (fn, exprString, outputList,
   outputStr) {
   it(exprString + ' -> ' + outputStr, () => {
-    const status = fn(flatten(math.parse(exprString)))
+    const status = fn(flatten(mathsteps.parseText(exprString)))
     const substeps = status.substeps
 
     assert.deepEqual(substeps.length, outputList.length)
