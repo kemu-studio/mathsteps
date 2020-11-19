@@ -6,7 +6,7 @@ const {create, all} = require('mathjs')
 const math = create(all, {
   epsilon: 1e-12,
   matrix: 'Matrix',
-  number: 'number',
+  number: 'BigNumber',
   precision: 64,
   predictable: false,
   randomSeed: null
