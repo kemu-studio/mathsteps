@@ -107,7 +107,7 @@ describe('can simplify with division', function () {
     ['2x * 5x / 2', '5x^2'],
     ['2x * 4x / 5 * 10 + 3', '16x^2 + 3'],
     ['2x * 4x / 2 / 4', 'x^2'],
-    ['2x * y / z * 10', '2x * y / z * 10'], // TODO: 20x * y / z
+    ['2x * y / z * 10', '20x * y / z'],
     ['2x * 4x / 5 * 10 + 3', '16x^2 + 3'],
     ['2x/x', '2'],
     ['2x/4/3', '1/6x'],
@@ -187,7 +187,7 @@ describe('distribution', function () {
     // Fractional exponents
     ['(x^2 y^2)^(1/2)', 'x * y'],
     ['(x^3 y^3)^(1/3)', 'x * y'],
-    ['(2x^2 * y^2)^(1/2)', 'x * y * nthRoot(2, 2)'],
+    ['(2x^2 * y^2)^(1/2)', 'x * y * sqrt(2)'],
 
     // nthRoot to a power
     ['(nthRoot(x, 2) * nthRoot(x, 2))^2', 'x^2'],
@@ -246,7 +246,7 @@ describe('distribution', function () {
     ['(nthRoot(x, 2))^2' , 'x'],
     ['(nthRoot(x, 2))^3' , 'x^(3/2)'],
     ['3 * (nthRoot(x, 2))^4', '3x^2'],
-    ['(nthRoot(x, 2) + nthRoot(x, 3))^2', 'x + 2 * nthRoot(x, 2) * nthRoot(x, 3) + x^(2/3)'], // TODO
+    ['(nthRoot(x, 2) + nthRoot(x, 3))^2', 'x + 2 * sqrt(x) * nthRoot(x, 3) + x^(2/3)'], // TODO
     ['(2x + 3)^2', '4x^2 + 12x + 9'],
     ['(x + 3 + 4)^2', 'x^2 + 14x + 49'],
 
@@ -316,7 +316,7 @@ describe('cancelling out', function() {
 
     ['2/ (4x^2)', '1 / (2x^2)'],
     ['2 a / a', '2'],
-    ['(35 * nthRoot (7)) / (5 * nthRoot(5))', '35 * nthRoot(7) / (5 * nthRoot(5))'], // TODO
+    ['(35 * nthRoot (7)) / (5 * nthRoot(5))', '35 * sqrt(7) / (5 * sqrt(5))'], // TODO
     ['3/(9r^2)', '1 / (3r^2)'],
     ['6/(2x)', '3 / x']
   ]
