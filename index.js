@@ -5,7 +5,6 @@ const stepThrough = require('./lib/simplifyExpression/stepThrough')
 const normalizeExpression = require('./lib/util/normalizeExpression')
 const print = require('./lib/util/print').ascii
 const printLatex = require('./lib/util/print').latex
-const removeUnnecessaryParens = require('./lib/util/removeUnnecessaryParens.js')
 const simplifyCommon = require('./lib/simplifyExpression/_common')
 
 const CACHE_ENABLED             = true
@@ -241,7 +240,6 @@ module.exports = {
   printAsTeX,
   compareByText,
   math,
-  removeUnnecessaryParens,
   convertTextToTeX,
   parseText,
   isOkAsSymbolicExpression,
