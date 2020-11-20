@@ -99,6 +99,6 @@ describe('fractions', function() {
 describe('simplifyDoubleUnaryMinus step actually happens', function () {
   it('22 - (-7) -> 22 + 7', function() {
     const steps = simplifyExpression('22 - (-7)')
-    assert.equal(steps[0].changeType, ChangeTypes.RESOLVE_DOUBLE_MINUS)
+    assert.equal(steps[0].changeType, ChangeTypes.SIMPLIFY_ARITHMETIC)
   })
 })

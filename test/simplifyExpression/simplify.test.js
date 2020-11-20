@@ -54,7 +54,7 @@ describe('simplify (basics)', function () {
     ['--x', 'x'],
 
     // Simplify signs.
-    ['-12x / -27', '4/9x'], // TODO: 4/9x
+    ['-12x / -27', '4/9x'],
     ['x / -y', '-x / y'],
 
     // Division.
@@ -64,8 +64,8 @@ describe('simplify (basics)', function () {
     ['(2+2)/x/6/(y-z)', '2 / (3x * y - 3x * z)'],
     ['2/x', '2 / x'],
     ['x/(2/3)', '3/2x'],
-    // TODO: ['x / (y/(z+a))', 'x * z / y + a * x / y'],
-    // TODO: ['x/((2+z)/(3/y))', '3 / (y * z + 2y) * x'],
+    ['x / (y/(z+a))', 'x * z / y + a * x / y'],
+    ['x/((2+z)/(3/y))', '3 / (y * z + 2y) * x'], // TODO: 3x / (y * z + 2y)
   ]
   tests.forEach(t => testSimplify(t[0], t[1], t[2]))
 })
@@ -128,7 +128,7 @@ describe('subtraction support', function() {
     ['x^2 + 3 - x*x', '3'],
     ['-(2*x) * -(2 + 2)', '8x'],
     ['(x-4)-5', 'x - 9'],
-    ['5-x-4', '-x + 1'],
+    ['5-x-4', '1 - x'],
   ]
   tests.forEach(t => testSimplify(t[0], t[1], t[2]))
 })
@@ -223,7 +223,7 @@ describe('distribution', function () {
     // if both groupings have fraction, the rule does not apply
     [
       '(3 / x^2 + x / (x^2 + 3)) * (5 / x + x^5)',
-      'x * x^5 / (x^2 + 3) + 5x / (x^3 + 3x) + 15 / x^3 + 3x^3'
+      'x^6 / (x^2 + 3) + 15 / x^3 + 3x^3 + 5 / (x^2 + 3)'
     ],
 
     // multisteps
@@ -239,7 +239,7 @@ describe('distribution', function () {
 
     [
       '(2x + x^2) * (3x^2 / (x^2 -4) + 4x^2)',
-      '3x^2 * x^2 / (x^2 - 4) + 6x * x^2 / (x^2 - 4) + 4x^4 + 8x^3'
+      '3x^4 / (x^2 - 4) + 6x^3 / (x^2 - 4) + 4x^4 + 8x^3'
     ],
 
     // expand base
@@ -316,7 +316,7 @@ describe('cancelling out', function() {
 
     ['2/ (4x^2)', '1 / (2x^2)'],
     ['2 a / a', '2'],
-    ['(35 * nthRoot (7)) / (5 * nthRoot(5))', '35 * sqrt(7) / (5 * sqrt(5))'], // TODO
+    ['(35 * nthRoot (7)) / (5 * nthRoot(5))', '7 * sqrt(7) / sqrt(5)'],
     ['3/(9r^2)', '1 / (3r^2)'],
     ['6/(2x)', '3 / x']
   ]
