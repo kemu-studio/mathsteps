@@ -246,7 +246,7 @@ describe('distribution', function () {
     ['(nthRoot(x, 2))^2' , 'x'],
     ['(nthRoot(x, 2))^3' , 'x^(3/2)'],
     ['3 * (nthRoot(x, 2))^4', '3x^2'],
-    ['(nthRoot(x, 2) + nthRoot(x, 3))^2', 'x + 2 * sqrt(x) * nthRoot(x, 3) + x^(2/3)'], // TODO
+    ['(nthRoot(x, 2) + nthRoot(x, 3))^2', 'x + 2x^(5/6) + x^(2/3)'],
     ['(2x + 3)^2', '4x^2 + 12x + 9'],
     ['(x + 3 + 4)^2', 'x^2 + 14x + 49'],
 
@@ -346,7 +346,11 @@ describe('nthRoot support', function() {
     ['x * nthRoot(x^4, 2)', 'x^3'],
     ['x * nthRoot(2 + 2, 3)', 'x * nthRoot(4, 3)'],
     ['x * nthRoot((2 + 2) * 2, 3)', '2x'],
-    ['nthRoot(x * (2 + 3) * x, 2)', 'x * sqrt(5)']
+    ['nthRoot(x * (2 + 3) * x, 2)', 'x * sqrt(5)'],
+    ['sqrt(x) * nthRoot(x,3)', 'x^(5/6)'],
+    ['nthRoot(x,3) * sqrt(x)', 'x^(5/6)'],
+    ['nthRoot(x,3) * nthRoot(x,4)', 'x^(7/12)'],
+    ['nthRoot(x,3) * nthRoot(x,4) * nthRoot(x,5)', 'x^(47/60)'],
   ]
   tests.forEach(t => testSimplify(t[0], t[1], t[2]))
 })
