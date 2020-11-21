@@ -37,8 +37,7 @@ function compareByText(x, y) {
   let rv = NaN
 
   if (CACHE_ENABLED) {
-    const cacheKey = x + '|' + y
-
+    const cacheKey = x.trim() + '|' + y.trim()
     rv = CACHE_COMPARE[cacheKey]
 
     if (rv == null) {
@@ -48,14 +47,15 @@ function compareByText(x, y) {
       }
 
       rv = _compareByTextInternal(x, y)
-
       CACHE_COMPARE[cacheKey] = rv
+
     } else {
       // Already cached - reuse previous result.
       if (CACHE_LOG_REUSED_ENABLED) {
         console.log('[ KMATHSTEPS ] Cache reused (compare)', x, y)
       }
     }
+
   } else {
     // Cache disabled - just wrap original call.
     rv = _compareByTextInternal(x, y)
@@ -69,7 +69,8 @@ function convertTextToTeX(text) {
 
   if (text && (text.trim() !== '')) {
     if (CACHE_ENABLED) {
-      rv = CACHE_TEXT_TO_TEX[text]
+      text = text.trim()
+      rv   = CACHE_TEXT_TO_TEX[text]
 
       if (rv == null) {
         // Cache missing.
@@ -78,8 +79,8 @@ function convertTextToTeX(text) {
         }
 
         rv = printAsTeX(parseText(text))
-
         CACHE_TEXT_TO_TEX[text] = rv
+
       } else {
         // Already cached - reuse previous result.
         if (CACHE_LOG_REUSED_ENABLED) {
@@ -108,7 +109,8 @@ function parseText(text) {
   let rv = null
 
   if (CACHE_ENABLED) {
-    rv = CACHE_TEXT_TO_NODE[text]
+    text = text.trim()
+    rv   = CACHE_TEXT_TO_NODE[text]
 
     if (rv == null) {
       // Cache missing.
@@ -117,7 +119,6 @@ function parseText(text) {
       }
 
       rv = _parseTextInternal(text)
-
       CACHE_TEXT_TO_NODE[text] = rv
 
     } else {
