@@ -23,50 +23,6 @@ function _compareByTextInternal(x, y) {
   }
 }
 
-function _removeObviousParentheses(node) {
-  // Process child nodes recursively.
-  if ((node.fn || node.object) && node.value) {
-    // x = ...
-    // Go into right node (rval).
-    _removeObviousParentheses(node.value)
-
-
-  } else if (node.content) {
-    // (x)
-    // Go into parentheses.
-    _removeObviousParentheses(node.content)
-
-  } else if (node.args) {
-    // Process child nodes recursively.
-    node.args.forEach((childNode) => _removeObviousParentheses(childNode))
-
-  } else {
-    // Give up. Unsupported node type.
-  }
-
-  // Process current node.
-  if ((node.op === '/') && (node.args.length === 2)) {
-    // (x) / (y) -> x/y
-    // Remove unneded parentheses from left node (numerator).
-    if (node.args[0].content) {
-      node.args[0] = node.args[0].content
-    }
-
-    // Remove unneded parentheses from right node (denominator).
-    if (node.args[1].content) {
-      node.args[1] = node.args[1].content
-    }
-  } else if ((node.op === '^') && (node.args.length === 2)) {
-    // x ^ (y) -> x^y
-    // Remove unneded parentheses from exponent.
-    if (node.args[1].content) {
-      node.args[1] = node.args[1].content
-    }
-  }
-
-  return node
-}
-
 function _postProcessResultTeX(resultTeX) {
   // Don't use x := y definitions.
   // We want x = y everywhere.
@@ -140,7 +96,7 @@ function convertTextToTeX(text) {
 }
 
 function _parseTextInternal(text) {
-  let rv = _removeObviousParentheses(math.parse(text))
+  let rv = math.parse(text)
 
   // Make sure we store all constant nodes as bignumber to avoid fake unequals.
   rv = simplifyCommon.kemuNormalizeConstantNodes(rv)
