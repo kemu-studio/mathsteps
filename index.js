@@ -6,6 +6,7 @@ const normalizeExpression = require('./lib/util/normalizeExpression')
 const print = require('./lib/util/print').ascii
 const printLatex = require('./lib/util/print').latex
 const simplifyCommon = require('./lib/simplifyExpression/_common')
+const clone = require('./lib/util/clone')
 
 const CACHE_ENABLED             = true
 const CACHE_LOG_MISSING_ENABLED = false
@@ -127,6 +128,9 @@ function parseText(text) {
         console.log('[ KMATHSTEPS ] Cache reused (text to node)', text)
       }
     }
+
+    // Avoid modifying nodes stored inside cache.
+    rv = clone(rv)
 
   } else {
     // Cache disabled - just wrap original call.
