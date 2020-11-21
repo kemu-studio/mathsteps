@@ -161,7 +161,7 @@ function simplifyExpression(expressionAsText, debug = false, expressionCtx = nul
 function isOkAsSymbolicExpression(expressionAsText) {
   let rv = false
 
-  if (expressionAsText && (expressionAsText.search(/\-\s*\-/) === -1)) {
+  if (expressionAsText && (expressionAsText.search(/-\s*-/) === -1)) {
     try {
       const expressionNode = parseText(expressionAsText + '*1')
       const steps = stepThrough(expressionNode)
@@ -185,7 +185,7 @@ function kemuSolveEquation(options) {
 }
 
 function solveEquation(x) {
-  if (typeof(x) !== 'object') {
+  if (typeof (x) !== 'object') {
     throw 'error: options object expected'
   }
   return kemuSolveEquation(x)

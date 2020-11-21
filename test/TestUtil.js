@@ -1,5 +1,4 @@
 const assert = require('assert')
-const math   = require('mathjs')
 
 const simplifyCommon = require('../lib/simplifyExpression/_common')
 const flatten   = simplifyCommon.kemuFlatten
