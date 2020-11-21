@@ -8,11 +8,6 @@ const TestUtil = require('../TestUtil')
 const constNode = Node.Creator.constant
 
 describe('Node.Type works', function () {
-  it('(2+2) parenthesis', function () {
-    assert.deepEqual(
-      Node.Type.isParenthesis(math.parse('(2+2)')),
-      true)
-  })
   it('10 constant', function () {
     assert.deepEqual(
       Node.Type.isConstant(math.parse(10)),
