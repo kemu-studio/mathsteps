@@ -133,6 +133,15 @@ describe('subtraction support', function() {
   tests.forEach(t => testSimplify(t[0], t[1], t[2]))
 })
 
+describe('break up numerator', function() {
+  const tests = [
+    ['(x+3+y)/3', 'x / 3 + y / 3 + 1'],
+    ['(2+x)/4', 'x / 4 + 1/2'],
+    ['2(x+3)/3', '2x / 3 + 2'],
+  ]
+  tests.forEach(t => testSimplify(t[0], t[1], t[2]))
+})
+
 describe('support for more * and ( that come from latex conversion', function () {
   const tests = [
     ['(3*x)*(4*x)', '12x^2'],
@@ -351,6 +360,50 @@ describe('nthRoot support', function() {
     ['nthRoot(x,3) * sqrt(x)', 'x^(5/6)'],
     ['nthRoot(x,3) * nthRoot(x,4)', 'x^(7/12)'],
     ['nthRoot(x,3) * nthRoot(x,4) * nthRoot(x,5)', 'x^(47/60)'],
+  ]
+  tests.forEach(t => testSimplify(t[0], t[1], t[2]))
+})
+
+describe('add constant fractions', function () {
+  const tests = [
+    ['4/5 + 3/5', '7/5'],
+    ['4/10 + 3/5', '1'],
+    ['4/9 + 3/5', '47/45'],
+    ['4/5 - 4/5', '0'],
+  ]
+  tests.forEach(t => testSimplify(t[0], t[1], t[2]))
+})
+
+describe('add constant and fraction', function () {
+  const tests = [
+    ['7 + 1/2', '15/2'],
+    ['5/6 + 3', '23/6'],
+    ['1/2 + 5.8', '63/10'],
+    ['1/3 + 5.8', '92/15'],
+  ]
+  tests.forEach(t => testSimplify(t[0], t[1], t[2]))
+})
+
+
+describe('multiply fractions', function() {
+  const tests = [
+    ['3 * 1/5 * 5/9', '1/3'],
+    ['3/7 * 10/11', '30/77'],
+    ['2 * 5/x', '10 / x'],
+    ['2 * (5/x)', '10 / x'],
+    ['(5/x) * (2/x)', '10 / x^2'],
+    ['(5/x) * x', '5'],
+    ['2x * 9/x', '18'],
+    ['-3/8 * 2/4', '-3/16'],
+    ['(-1/2) * 4/5', '-2/5'],
+    ['4 * (-1/x)', '-4 / x'],
+    ['x * 2y / x', '2y'],
+    ['x/z * 1/2', 'x / (2z)'],
+    ['(6y / x) * 4x', '24y'],
+    ['2x * y / z * 10', '20x * y / z'],
+    ['-(1/2) * (1/2)', '-1/4'],
+    ['x * -(1/x)', '-1'],
+    ['-(5/y) * -(x/y)', '5x / y^2'],
   ]
   tests.forEach(t => testSimplify(t[0], t[1], t[2]))
 })

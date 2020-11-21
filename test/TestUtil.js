@@ -1,7 +1,8 @@
 const assert = require('assert')
 const math   = require('mathjs')
 
-const flatten   = require('../lib/util/flattenOperands')
+const simplifyCommon = require('../lib/simplifyExpression/_common')
+const flatten   = simplifyCommon.kemuFlatten
 const print     = require('../lib/util/print')
 const mathsteps = require('../index.js')
 
