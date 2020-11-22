@@ -2,7 +2,6 @@ const {math} = require('./config')
 const ChangeTypes = require('./lib/ChangeTypes')
 const Node = require('./lib/node')
 const stepThrough = require('./lib/simplifyExpression/stepThrough')
-const normalizeExpression = require('./lib/util/normalizeExpression')
 const print = require('./lib/util/print').ascii
 const printLatex = require('./lib/util/print').latex
 const simplifyCommon = require('./lib/simplifyExpression/_common')
@@ -189,6 +188,18 @@ function solveEquation(x) {
     throw 'error: options object expected'
   }
   return kemuSolveEquation(x)
+}
+
+function normalizeExpression(text) {
+  let rv = '[?]'
+
+  try {
+    rv = print(parseText(text))
+  } catch (err) {
+    rv = '[error]'
+  }
+
+  return rv
 }
 
 module.exports = {
