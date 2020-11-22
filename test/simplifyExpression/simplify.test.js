@@ -614,7 +614,11 @@ describe('kemu extensions', function() {
     ['2^2', '4'],
     ['x^2', 'x^2'],
     ['x', 'x'],
+
     // -------------------------------------------------------------------------
+    // Remove nested fractions.
+    ['1/(2/3 c)'   , '3 / (2c)'],
+    ['a/(b/c * d)' , 'a * c / (b * d)'],
   ]
 
   // Create fake symbolic context to handle domain for PI.
