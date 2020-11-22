@@ -36,11 +36,8 @@ function printAsTeX(node) {
 function compareByText(x, y) {
   let rv = NaN
 
-  x = (x || 'null').toString()
-  y = (y || 'null').toString()
-
   if (CACHE_ENABLED) {
-    const cacheKey = x.trim() + '|' + y.trim()
+    const cacheKey = x + '|' + y
     rv = CACHE_COMPARE[cacheKey]
 
     if (rv == null) {
