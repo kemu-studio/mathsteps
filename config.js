@@ -1,6 +1,5 @@
 // change the default mathjs configuration.
 // We want to store all constants as big number.
-// const math = require('mathjs')
 const {create, all} = require('mathjs')
 
 const math = create(all, {
