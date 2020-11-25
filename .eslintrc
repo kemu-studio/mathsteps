@@ -37,6 +37,9 @@
     "document": true,
     "Promise": true,
     "Buffer": true,
-    "module": true
+    "module": true,
+    "Map": true,
+    "Set": true,
+    "Symbol": true
   }
 }

@@ -1,3 +1,6 @@
+/*
+  TODO
+
 const assert = require('assert')
 const math = require('mathjs')
 
@@ -196,3 +199,4 @@ describe('flattens nested functions', function () {
   ]
   tests.forEach(t => testFlatten(t[0], t[1]))
 })
+*/

@@ -71,17 +71,6 @@ describe('collecting like terms within the context of the stepper', function() {
   tests.forEach(t => testOneStep(t[0], t[1]))
 })
 
-describe('collects and combines like terms', function() {
-  const tests = [
-    ['(x + x) + (x^2 + x^2)', '2x + x^2 + x^2'], // substeps not tested here
-    ['10 + (y^2 + y^2)', '2y^2 + 10'],           // substeps not tested here
-    ['10y^2 + 1/2*y^2 + 3/2*y^2', '12y^2'],      // substeps not tested here
-    ['x + y + y^2', 'y^2 + x + y'],
-    ['2x^(2+1)', '2x^3'],
-  ]
-  tests.forEach(t => testOneStep(t[0], t[1]))
-})
-
 describe('stepThrough returning no steps', function() {
   it('12x^2 already simplified', function () {
     assert.deepEqual(
@@ -110,6 +99,6 @@ describe('fractions', function() {
 describe('simplifyDoubleUnaryMinus step actually happens', function () {
   it('22 - (-7) -> 22 + 7', function() {
     const steps = simplifyExpression('22 - (-7)')
-    assert.equal(steps[0].changeType, ChangeTypes.RESOLVE_DOUBLE_MINUS)
+    assert.equal(steps[0].changeType, ChangeTypes.SIMPLIFY_ARITHMETIC)
   })
 })

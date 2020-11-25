@@ -54,18 +54,18 @@ describe('simplify (basics)', function () {
     ['--x', 'x'],
 
     // Simplify signs.
-    ['-12x / -27', '4/9x'], // TODO: 4/9x
+    ['-12x / -27', '4/9x'],
     ['x / -y', '-x / y'],
 
     // Division.
     ['6/x/5', '6 / (5x)'],
     ['-(6/x/5)', '-6 / (5x)'],
     ['-6/x/5', '-6 / (5x)'],
-    ['(2+2)/x/6/(y-z)','2 / (3x * (y - z))'],
+    ['(2+2)/x/6/(y-z)', '2 / (3x * y - 3x * z)'],
     ['2/x', '2 / x'],
     ['x/(2/3)', '3/2x'],
     ['x / (y/(z+a))', 'x * z / y + a * x / y'],
-    ['x/((2+z)/(3/y))', 'x / (y / 3 * z + 2/3y)'], // TODO
+    ['x/((2+z)/(3/y))', '3 / (y * z + 2y) * x'], // TODO: 3x / (y * z + 2y)
   ]
   tests.forEach(t => testSimplify(t[0], t[1], t[2]))
 })
@@ -128,7 +128,16 @@ describe('subtraction support', function() {
     ['x^2 + 3 - x*x', '3'],
     ['-(2*x) * -(2 + 2)', '8x'],
     ['(x-4)-5', 'x - 9'],
-    ['5-x-4', '-x + 1'],
+    ['5-x-4', '1 - x'],
+  ]
+  tests.forEach(t => testSimplify(t[0], t[1], t[2]))
+})
+
+describe('break up numerator', function() {
+  const tests = [
+    ['(x+3+y)/3', 'x / 3 + y / 3 + 1'],
+    ['(2+x)/4', 'x / 4 + 1/2'],
+    ['2(x+3)/3', '2x / 3 + 2'],
   ]
   tests.forEach(t => testSimplify(t[0], t[1], t[2]))
 })
@@ -180,14 +189,14 @@ describe('distribution', function () {
     ['(2x^2 * 3y^2)^2', '36x^4 * y^4'],
     ['((x + 1)^2 (x + 1)^2)^2', 'x^8 + 8x^7 + 28x^6 + 56x^5 + 70x^4 + 56x^3 + 28x^2 + 8x + 1'],
     ['(x * y * (2x + 1))^2', '4x^4 * y^2 + 4x^3 * y^2 + x^2 * y^2'],
-    ['((x + 1) * 2y^2 * 2)^2', '16 * (x^2 + 2x + 1) * y^4'],
+    ['((x + 1) * 2y^2 * 2)^2', '16x^2 * y^4 + 32x * y^4 + 16y^4'],
     ['(2x * (x + 1))^2', '4x^4 + 8x^3 + 4x^2'],
     ['(x^2 y)^2.5', 'x^5 * y^(5/2)'],
 
     // Fractional exponents
     ['(x^2 y^2)^(1/2)', 'x * y'],
     ['(x^3 y^3)^(1/3)', 'x * y'],
-    ['(2x^2 * y^2)^(1/2)', 'x * y * nthRoot(2, 2)'],
+    ['(2x^2 * y^2)^(1/2)', 'x * y * sqrt(2)'],
 
     // nthRoot to a power
     ['(nthRoot(x, 2) * nthRoot(x, 2))^2', 'x^2'],
@@ -196,7 +205,71 @@ describe('distribution', function () {
     ['(nthRoot(x, 2) * nthRoot(x, 3))^2', 'x^(5/3)'],
     ['nthRoot(x, 2)^(1/2)', 'x^(1/4)'],
     ['(nthRoot(x^2, 2)^2 * nthRoot(x, 3)^3)^2', 'x^6'],
+
     // -------------------------------------------------------------------------
+    // distribute - into paren with addition
+    ['-(x+3)', '-x - 3'],
+    ['-(x - 3)', '-x + 3'],
+    ['-(-x^2 + 3y^6)' , '-3y^6 + x^2'],
+
+    // distribute - into paren with multiplication/division
+    ['-(x*3)', '-3x'],
+    ['-(-x * 3)', '3x'],
+    ['-(-x^2 * 3y^6)', '3x^2 * y^6'],
+
+    // other
+    ['x*(x+2+y)', 'x^2 + x * y + 2x'],
+    ['(x+2+y)*x*7', '7x^2 + 7x * y + 14x'],
+    ['(5+x)*(x+3)', 'x^2 + 8x + 15'],
+    ['-2x^2 * (3x - 4)', '-6x^3 + 8x^2'],
+
+    // distribute the non-fraction term into the numerator(s)
+    [
+      '(3 / x^2 + x / (x^2 + 3)) * (x^2 + 3)',
+      '9 / x^2 + x + 3'
+    ],
+
+    // if both groupings have fraction, the rule does not apply
+    [
+      '(3 / x^2 + x / (x^2 + 3)) * (5 / x + x^5)',
+      'x^6 / (x^2 + 3) + 15 / x^3 + 3x^3 + 5 / (x^2 + 3)'
+    ],
+
+    // multisteps
+    [
+      '(2 / x +  3x^2) * (x^3 + 1)',
+      '3x^5 + 5x^2 + 2 / x'
+    ],
+
+    [
+      '(2x + x^2) * (1 / (x^2 -4) + 4x^2)',
+      'x^2 / (x^2 - 4) + 4x^4 + 2x / (x^2 - 4) + 8x^3'
+    ],
+
+    [
+      '(2x + x^2) * (3x^2 / (x^2 -4) + 4x^2)',
+      '3x^4 / (x^2 - 4) + 6x^3 / (x^2 - 4) + 4x^4 + 8x^3'
+    ],
+
+    // expand base
+    ['(nthRoot(x, 2))^2' , 'x'],
+    ['(nthRoot(x, 2))^3' , 'x^(3/2)'],
+    ['3 * (nthRoot(x, 2))^4', '3x^2'],
+    ['(nthRoot(x, 2) + nthRoot(x, 3))^2', 'x + 2x^(5/6) + x^(2/3)'],
+    ['(2x + 3)^2', '4x^2 + 12x + 9'],
+    ['(x + 3 + 4)^2', 'x^2 + 14x + 49'],
+
+    // These should not expand
+    // Needs to have a positive integer exponent > 1
+    ['x + 2', 'x + 2'],
+    ['(x + 2)^-1', '1 / (x + 2)'],
+    ['(x + 1)^x', '(x + 1)^x'],
+    ['(x + 1)^(2x)', '(x + 1)^(2x)'],
+    ['(x + 1)^(1/2)', '(x + 1)^(1/2)'],
+    ['(x + 1)^2.5', '(x + 1)^(5/2)'],
+
+    // One case from al_distribute_over_mult
+    ['1 / (x + 1)^x', '1 / (x + 1)^x'],
   ]
   tests.forEach(t => testSimplify(t[0], t[1], t[2]))
 })
@@ -231,8 +304,30 @@ describe('cancelling out', function() {
     ['(x)/(-x)', '-1'],
     ['((2x^3 y^2)/(-x^2 y^5))^(-2)', 'y^6 / (4x^2)'],
     ['(1+2a)/a', '1 / a + 2'],
-    ['(x ^ 4 * y + -(x ^ 2 * y ^ 2)) / (-x ^ 2 * y)', '-x^2 + y'],
+    ['(x ^ 4 * y + -(x ^ 2 * y ^ 2)) / (-x ^ 2 * y)', 'y - x^2'],
     ['6 / (2x^2)', '3 / x^2'],
+
+    // Cancel like terms.
+    ['2/2', '1'],
+    ['x^2/x^2', '1'],
+    ['x^3/x^2', 'x'],
+    ['(x^3*y)/x^2', 'x * y'],
+    ['-(7+x)^8/(7+x)^2', '-42x^5 - 735x^4 - 6860x^3 - 36015x^2 - 100842x - 117649 - x^6'],
+    ['(2x^2 * 5) / (2x^2)', '5'], // these parens have to stay around 2x^2 to be parsed correctly.
+    ['(x^2 * y) / x', 'x * y'],
+    ['2x^2 / (2x^2 * 5)', '1/5'],
+    ['x / (x^2*y)', '1 / (x * y)'],
+    ['(4x^2) / (5x^2)', '4/5'],
+    ['(2x+5)^8 / (2x+5)^2', '64x^6 + 960x^5 + 6000x^4 + 20000x^3 + 37500x^2 + 37500x + 15625'],
+    ['(4x^3) / (5x^2)', '4x / 5'], // TODO: 4/5 x
+    ['-x / -x', '1'],
+    ['2/ (4x)', '1 / (2x)'],
+
+    ['2/ (4x^2)', '1 / (2x^2)'],
+    ['2 a / a', '2'],
+    ['(35 * nthRoot (7)) / (5 * nthRoot(5))', '7 * sqrt(7) / sqrt(5)'],
+    ['3/(9r^2)', '1 / (3r^2)'],
+    ['6/(2x)', '3 / x']
   ]
   tests.forEach(t => testSimplify(t[0], t[1], t[2]))
 })
@@ -260,7 +355,55 @@ describe('nthRoot support', function() {
     ['x * nthRoot(x^4, 2)', 'x^3'],
     ['x * nthRoot(2 + 2, 3)', 'x * nthRoot(4, 3)'],
     ['x * nthRoot((2 + 2) * 2, 3)', '2x'],
-    ['nthRoot(x * (2 + 3) * x, 2)', 'x * sqrt(5)']
+    ['nthRoot(x * (2 + 3) * x, 2)', 'x * sqrt(5)'],
+    ['sqrt(x) * nthRoot(x,3)', 'x^(5/6)'],
+    ['nthRoot(x,3) * sqrt(x)', 'x^(5/6)'],
+    ['nthRoot(x,3) * nthRoot(x,4)', 'x^(7/12)'],
+    ['nthRoot(x,3) * nthRoot(x,4) * nthRoot(x,5)', 'x^(47/60)'],
+  ]
+  tests.forEach(t => testSimplify(t[0], t[1], t[2]))
+})
+
+describe('add constant fractions', function () {
+  const tests = [
+    ['4/5 + 3/5', '7/5'],
+    ['4/10 + 3/5', '1'],
+    ['4/9 + 3/5', '47/45'],
+    ['4/5 - 4/5', '0'],
+  ]
+  tests.forEach(t => testSimplify(t[0], t[1], t[2]))
+})
+
+describe('add constant and fraction', function () {
+  const tests = [
+    ['7 + 1/2', '15/2'],
+    ['5/6 + 3', '23/6'],
+    ['1/2 + 5.8', '63/10'],
+    ['1/3 + 5.8', '92/15'],
+  ]
+  tests.forEach(t => testSimplify(t[0], t[1], t[2]))
+})
+
+
+describe('multiply fractions', function() {
+  const tests = [
+    ['3 * 1/5 * 5/9', '1/3'],
+    ['3/7 * 10/11', '30/77'],
+    ['2 * 5/x', '10 / x'],
+    ['2 * (5/x)', '10 / x'],
+    ['(5/x) * (2/x)', '10 / x^2'],
+    ['(5/x) * x', '5'],
+    ['2x * 9/x', '18'],
+    ['-3/8 * 2/4', '-3/16'],
+    ['(-1/2) * 4/5', '-2/5'],
+    ['4 * (-1/x)', '-4 / x'],
+    ['x * 2y / x', '2y'],
+    ['x/z * 1/2', 'x / (2z)'],
+    ['(6y / x) * 4x', '24y'],
+    ['2x * y / z * 10', '20x * y / z'],
+    ['-(1/2) * (1/2)', '-1/4'],
+    ['x * -(1/x)', '-1'],
+    ['-(5/y) * -(x/y)', '5x / y^2'],
   ]
   tests.forEach(t => testSimplify(t[0], t[1], t[2]))
 })
@@ -343,6 +486,13 @@ describe('kemu extensions', function() {
     ['y x', 'x * y'],
     ['y z x a', 'a * x * y * z'],
     ['y z * 4 * x a', '4a * x * y * z'],
+
+    // Collects and combines like terms
+    ['(x + x) + (x^2 + x^2)', '2x^2 + 2x'],
+    ['10 + (y^2 + y^2)', '2y^2 + 10'],
+    ['10y^2 + 1/2*y^2 + 3/2*y^2', '12y^2'],
+    ['x + y + y^2', 'y^2 + x + y'],
+    ['2x^(2+1)', '2x^3'],
 
     // Collect like terms with mixed symbols (xy like)
     ['x y + x y', '2x * y'],
@@ -431,7 +581,7 @@ describe('kemu extensions', function() {
     ['(x^2 * 3x * y^2)^3', '27x^9 * y^6'],
     // When terms are polynomials or power nodes
     ['((x + 1)^2 (x + 1)^2)^2', 'x^8 + 8x^7 + 28x^6 + 56x^5 + 70x^4 + 56x^3 + 28x^2 + 8x + 1'],
-    ['((x + y)^3 * (x + 1))^3', 'x^3 * (x^9 + 9x^8 * y + 36x^7 * y^2 + 84x^6 * y^3 + 126x^5 * y^4 + 126x^4 * y^5 + 84x^3 * y^6 + 36x^2 * y^7 + 9x * y^8 + y^9) + 3x^2 * (x^9 + 9x^8 * y + 36x^7 * y^2 + 84x^6 * y^3 + 126x^5 * y^4 + 126x^4 * y^5 + 84x^3 * y^6 + 36x^2 * y^7 + 9x * y^8 + y^9) + 3x * (x^3 + 3x^2 * y + 3x * y^2 + y^3) * (x^6 + 6x^5 * y + 15x^4 * y^2 + 20x^3 * y^3 + 15x^2 * y^4 + 6x * y^5 + y^6) + x^9 + 9x^8 * y + 36x^7 * y^2 + 84x^6 * y^3 + 126x^5 * y^4 + 126x^4 * y^5 + 84x^3 * y^6 + 36x^2 * y^7 + 9x * y^8 + y^9'],
+    // TODO: ['((x + y)^3 * (x + 1))^3', 'x^3 * (x^9 + 9x^8 * y + 36x^7 * y^2 + 84x^6 * y^3 + 126x^5 * y^4 + 126x^4 * y^5 + 84x^3 * y^6 + 36x^2 * y^7 + 9x * y^8 + y^9) + 3x^2 * (x^9 + 9x^8 * y + 36x^7 * y^2 + 84x^6 * y^3 + 126x^5 * y^4 + 126x^4 * y^5 + 84x^3 * y^6 + 36x^2 * y^7 + 9x * y^8 + y^9) + 3x * (x^3 + 3x^2 * y + 3x * y^2 + y^3) * (x^6 + 6x^5 * y + 15x^4 * y^2 + 20x^3 * y^3 + 15x^2 * y^4 + 6x * y^5 + y^6) + x^9 + 9x^8 * y + 36x^7 * y^2 + 84x^6 * y^3 + 126x^5 * y^4 + 126x^4 * y^5 + 84x^3 * y^6 + 36x^2 * y^7 + 9x * y^8 + y^9'],
     // TODO: ['((x + 1) (y + 1) (z + 1))^2', '(x + 1)^2 * (y + 1)^2 * (z + 1)^2'],
 
     // When terms are division nodes
@@ -444,7 +594,7 @@ describe('kemu extensions', function() {
 
     // Combination of terms
     ['(2x * (x + 1))^2', '4x^4 + 8x^3 + 4x^2'],
-    ['((x + 1) * 2y^2 * 2)^2', '16 * (x^2 + 2x + 1) * y^4'],
+    ['((x + 1) * 2y^2 * 2)^2', '16x^2 * y^4 + 32x * y^4 + 16y^4'],
 
     // Works for decimal exponents too
     ['(x^2 y)^2.5', 'x^5 * y^(5/2)'],
@@ -464,7 +614,11 @@ describe('kemu extensions', function() {
     ['2^2', '4'],
     ['x^2', 'x^2'],
     ['x', 'x'],
+
     // -------------------------------------------------------------------------
+    // Remove nested fractions.
+    ['1/(2/3 c)'   , '3 / (2c)'],
+    ['a/(b/c * d)' , 'a * c / (b * d)'],
   ]
 
   // Create fake symbolic context to handle domain for PI.

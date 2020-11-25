@@ -1,5 +1,4 @@
 const assert    = require('assert')
-const math      = require('mathjs')
 const mathsteps = require('../../index.js')
 
 const checks = require('../../lib/checks')

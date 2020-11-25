@@ -2,11 +2,10 @@ const {math} = require('./config')
 const ChangeTypes = require('./lib/ChangeTypes')
 const Node = require('./lib/node')
 const stepThrough = require('./lib/simplifyExpression/stepThrough')
-const normalizeExpression = require('./lib/util/normalizeExpression')
 const print = require('./lib/util/print').ascii
 const printLatex = require('./lib/util/print').latex
-const removeUnnecessaryParens = require('./lib/util/removeUnnecessaryParens.js')
 const simplifyCommon = require('./lib/simplifyExpression/_common')
+const clone = require('./lib/util/clone')
 
 const CACHE_ENABLED             = true
 const CACHE_LOG_MISSING_ENABLED = false
@@ -24,50 +23,6 @@ function _compareByTextInternal(x, y) {
   }
 }
 
-function _removeObviousParentheses(node) {
-  // Process child nodes recursively.
-  if ((node.fn || node.object) && node.value) {
-    // x = ...
-    // Go into right node (rval).
-    _removeObviousParentheses(node.value)
-
-
-  } else if (node.content) {
-    // (x)
-    // Go into parentheses.
-    _removeObviousParentheses(node.content)
-
-  } else if (node.args) {
-    // Process child nodes recursively.
-    node.args.forEach((childNode) => _removeObviousParentheses(childNode))
-
-  } else {
-    // Give up. Unsupported node type.
-  }
-
-  // Process current node.
-  if ((node.op === '/') && (node.args.length === 2)) {
-    // (x) / (y) -> x/y
-    // Remove unneded parentheses from left node (numerator).
-    if (node.args[0].content) {
-      node.args[0] = node.args[0].content
-    }
-
-    // Remove unneded parentheses from right node (denominator).
-    if (node.args[1].content) {
-      node.args[1] = node.args[1].content
-    }
-  } else if ((node.op === '^') && (node.args.length === 2)) {
-    // x ^ (y) -> x^y
-    // Remove unneded parentheses from exponent.
-    if (node.args[1].content) {
-      node.args[1] = node.args[1].content
-    }
-  }
-
-  return node
-}
-
 function _postProcessResultTeX(resultTeX) {
   // Don't use x := y definitions.
   // We want x = y everywhere.
@@ -83,7 +38,6 @@ function compareByText(x, y) {
 
   if (CACHE_ENABLED) {
     const cacheKey = x + '|' + y
-
     rv = CACHE_COMPARE[cacheKey]
 
     if (rv == null) {
@@ -93,14 +47,15 @@ function compareByText(x, y) {
       }
 
       rv = _compareByTextInternal(x, y)
-
       CACHE_COMPARE[cacheKey] = rv
+
     } else {
       // Already cached - reuse previous result.
       if (CACHE_LOG_REUSED_ENABLED) {
         console.log('[ KMATHSTEPS ] Cache reused (compare)', x, y)
       }
     }
+
   } else {
     // Cache disabled - just wrap original call.
     rv = _compareByTextInternal(x, y)
@@ -114,7 +69,8 @@ function convertTextToTeX(text) {
 
   if (text && (text.trim() !== '')) {
     if (CACHE_ENABLED) {
-      rv = CACHE_TEXT_TO_TEX[text]
+      text = text.trim()
+      rv   = CACHE_TEXT_TO_TEX[text]
 
       if (rv == null) {
         // Cache missing.
@@ -123,8 +79,8 @@ function convertTextToTeX(text) {
         }
 
         rv = printAsTeX(parseText(text))
-
         CACHE_TEXT_TO_TEX[text] = rv
+
       } else {
         // Already cached - reuse previous result.
         if (CACHE_LOG_REUSED_ENABLED) {
@@ -141,7 +97,7 @@ function convertTextToTeX(text) {
 }
 
 function _parseTextInternal(text) {
-  let rv = _removeObviousParentheses(math.parse(text))
+  let rv = math.parse(text)
 
   // Make sure we store all constant nodes as bignumber to avoid fake unequals.
   rv = simplifyCommon.kemuNormalizeConstantNodes(rv)
@@ -153,7 +109,8 @@ function parseText(text) {
   let rv = null
 
   if (CACHE_ENABLED) {
-    rv = CACHE_TEXT_TO_NODE[text]
+    text = text.trim()
+    rv   = CACHE_TEXT_TO_NODE[text]
 
     if (rv == null) {
       // Cache missing.
@@ -162,7 +119,6 @@ function parseText(text) {
       }
 
       rv = _parseTextInternal(text)
-
       CACHE_TEXT_TO_NODE[text] = rv
 
     } else {
@@ -171,6 +127,9 @@ function parseText(text) {
         console.log('[ KMATHSTEPS ] Cache reused (text to node)', text)
       }
     }
+
+    // Avoid modifying nodes stored inside cache.
+    rv = clone(rv)
 
   } else {
     // Cache disabled - just wrap original call.
@@ -201,7 +160,7 @@ function simplifyExpression(expressionAsText, debug = false, expressionCtx = nul
 function isOkAsSymbolicExpression(expressionAsText) {
   let rv = false
 
-  if (expressionAsText && (expressionAsText.search(/\-\s*\-/) === -1)) {
+  if (expressionAsText && (expressionAsText.search(/-\s*-/) === -1)) {
     try {
       const expressionNode = parseText(expressionAsText + '*1')
       const steps = stepThrough(expressionNode)
@@ -225,10 +184,22 @@ function kemuSolveEquation(options) {
 }
 
 function solveEquation(x) {
-  if (typeof(x) !== 'object') {
+  if (typeof (x) !== 'object') {
     throw 'error: options object expected'
   }
   return kemuSolveEquation(x)
+}
+
+function normalizeExpression(text) {
+  let rv = '[?]'
+
+  try {
+    rv = print(parseText(text))
+  } catch (err) {
+    rv = '[error]'
+  }
+
+  return rv
 }
 
 module.exports = {
@@ -241,7 +212,6 @@ module.exports = {
   printAsTeX,
   compareByText,
   math,
-  removeUnnecessaryParens,
   convertTextToTeX,
   parseText,
   isOkAsSymbolicExpression,

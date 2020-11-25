@@ -24,11 +24,11 @@ function testSolve(equationAsText, outputStr, debug = false) {
 
 describe('solveEquation for =', function () {
   const tests = [
-    ['g *( x ) = ( x - 4) ^ ( 2) - 3', 'g = x + 13 / x - 8'],
+    ['g *( x ) = ( x - 4) ^ ( 2) - 3', 'g = 13 / x + x - 8'],
 
     // can't solve this because we don't deal with inequalities yet
     // See: https://www.cymath.com/answer.php?q=(%20x%20)%2F(%202x%20%2B%207)%20%3E%3D%204
-    // TODO: ['( x )/( 2x + 7) >= 4', ''], (Handle unequalities)
+    // TODO: Handle unequalities: ['( x )/( 2x + 7) >= 4', ''],
     ['y - x - 2 = 3*2', 'y = x + 8'],
     ['2y - x - 2 = x', 'y = x + 1'],
     ['x = 1', 'x = 1'],
@@ -116,7 +116,7 @@ describe('solveEquation for =', function () {
     ['(y + 1)^2 = 1', 'y = [-2, 0]'],
     ['(y + 1)^3 = 8', 'y = 1'],
     ['(2x + 1)^3 = 1', 'x = 0'],
-    ['(3x + 2)^2 = 2', 'x = [-sqrt(2) / 3 - 2/3, -2/3 + sqrt(2) / 3]'], // TODO: [-sqrt(2) / 3 - 2/3, sqrt(2) / 3 - 2/3]'],
+    ['(3x + 2)^2 = 2', 'x = [-sqrt(2) / 3 - 2/3, -2/3 + sqrt(2) / 3]'],
     ['(3x + 2)^2 + 2 = 1', 'x = false'],
     // -------------------------------------------------------------------------
 
@@ -127,7 +127,7 @@ describe('solveEquation for =', function () {
     ['2/(4x) = 1', 'x = 1/2'],
     ['2/(8 - 4x) = 1/2', 'x = 1'],
     ['2/(1 + 1 + 4x) = 1/3', 'x = 1'],
-    // TODO: ['(3 + x) / (x^2 + 3) = 1', 'x = [0, 1]'], (Unsolved)
+    ['(3 + x) / (x^2 + 3) = 1', 'x = [1, 0]'],
     ['6/x + 8/(2x) = 10', 'x = 1'],
 
     // Imported from https://github.com/florisdf/mathsteps/blob/master/test/solveEquation/solveEquation.test.js
@@ -147,8 +147,8 @@ describe('solveEquation for =', function () {
     ['44x=2.74', 'x = 137/2200'],
 
     // Possible improvement: Possibility to point unknown variable directly?
-    // TODO: ['(x + y) (y + 2) = 0', 'x = -y'], // Solve for x (first found symbol)
-    ['(y + x) (y + 2) = 0', 'y = [-x, -2]'],    // Solve for y (first found symbol)
+    ['(x + y) (y + 2) = 0', 'x = -y'],       // Solve for x (first found symbol)
+    ['(y + x) (y + 2) = 0', 'y = [-x, -2]'], // Solve for y (first found symbol)
 
     // Possible improvement: Skip repeated solutions.
     ['((x-2)^2) = 0', 'x = 2'],
@@ -162,7 +162,8 @@ describe('solveEquation for =', function () {
     ['(x^2 + 2x + 1) (x^2 + 3x + 2) = 0', 'x = [-1, -2, -1]'],
     ['(2x^2 - 1)(x^2 - 5)(x^2 + 5) = 0', 'x = [-1 / sqrt(2), 1 / sqrt(2), -sqrt(5), sqrt(5)]'],
     ['x^2 = -2x - 1', 'x = -1'],
-    ['x - 3.4= ( x - 2.5)/( 1.3)', 'x = 32/5']
+    ['x - 3.4= ( x - 2.5)/( 1.3)', 'x = 32/5'],
+    ['x + 3 - x^2 = 3', 'x = [1, 0]'],
   ]
 
   tests.forEach((t) => {

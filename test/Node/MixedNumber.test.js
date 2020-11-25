@@ -1,3 +1,6 @@
+/*
+  TODO: Is it still usefull?
+
 const MixedNumber = require('../../lib/node/MixedNumber')
 const TestUtil = require('../TestUtil')
 
@@ -71,3 +74,4 @@ describe('getDenominator', function () {
   ]
   tests.forEach(t => testGetDenominatorValue(t[0], t[1]))
 })
+*/
