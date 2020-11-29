@@ -65,7 +65,7 @@ describe('simplify (basics)', function () {
     ['2/x', '2 / x'],
     ['x/(2/3)', '3/2x'],
     ['x / (y/(z+a))', 'x * z / y + a * x / y'],
-    ['x/((2+z)/(3/y))', '3 / (y * z + 2y) * x'], // TODO: 3x / (y * z + 2y)
+    ['x/((2+z)/(3/y))', '3x / (y * z + 2y)'],
   ]
   tests.forEach(t => testSimplify(t[0], t[1], t[2]))
 })
@@ -598,7 +598,7 @@ describe('kemu extensions', function() {
 
     // Works for decimal exponents too
     ['(x^2 y)^2.5', 'x^5 * y^(5/2)'],
-    ['((x + 1) x^2)^2.2', '(x^3 + x^2)^(11/5)'],
+    ['((x + 1) x^2)^2.2', '(x + 1)^(11/5) * x^(22/5)'], // TODO: (x^3 + x^2)^(11/5)
 
     // Convert nthRoot to exponent form
     ['nthRoot(x, 2)^3', 'x^(3/2)'],
