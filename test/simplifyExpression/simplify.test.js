@@ -420,6 +420,41 @@ describe('keeping parens in important places, on printing', function() {
   testSimplify('2 / (3x^2) + 5', '2 / (3x^2) + 5')
 })
 
+describe('nthRoot', function() {
+  const tests = [
+    ['nthRoot(4)', '2'],
+    ['nthRoot(8, 3)', '2'],
+    ['nthRoot(5 * 7)', 'sqrt(35)'],
+    ['nthRoot(4, 3)', 'nthRoot(4, 3)'],
+    ['nthRoot(12)', '2 * sqrt(3)'],
+    ['nthRoot(36)', '6'],
+    ['nthRoot(72)', '6 * sqrt(2)'],
+    ['nthRoot(x^2)', 'x'],
+    ['nthRoot(x ^ 3)', 'x^(3/2)'],
+    ['nthRoot(x^3, 3)', 'x'],
+    ['nthRoot(-2)', 'sqrt(-2)'],
+    ['nthRoot(2 ^ x, x)', '2'],
+    ['nthRoot(x ^ (1/2), 1/2)', 'x'],
+    ['nthRoot(2 * 2, 2)', '2'],
+    ['nthRoot(3 * 2 * 3 * 2, 2)', '6'],
+    ['nthRoot(36*x)', '6 * sqrt(x)'],
+    ['nthRoot(2 * 18 * x ^ 2, 2)', '6x'],
+    ['nthRoot(x * x, 2)', 'x'],
+    ['nthRoot(x * x * (2 + 3), 2)', 'x * sqrt(5)'],
+    ['nthRoot(64, 3)', '4'],
+    ['nthRoot(35937, 3)', '33'],
+
+    ['nthRoot(12)', '2 * sqrt(3)'],
+    ['nthRoot(72)', '6 * sqrt(2)'],
+    ['nthRoot(36*x)', '6 * sqrt(x)'],
+    ['nthRoot(2 * 18 * x^2, 2)', '6x'],
+    ['nthRoot(32, 3)', '2 * nthRoot(4, 3)'],
+    ['nthRoot(32, 4)', '2 * nthRoot(2, 4)'],
+    ['nthRoot(2 * 2 * 3 * 2, 3)', '2 * nthRoot(3, 3)'],
+  ]
+  tests.forEach(t => testSimplify(t[0], t[1], t[2]))
+})
+
 describe('kemu extensions', function() {
   const tests = [
     // Basic.
@@ -427,7 +462,7 @@ describe('kemu extensions', function() {
     ['sqrt((2 pi) ^ 2 / (4 pi ^ 2))' , '1'],
     ['(a*b*c*d)^2', 'a^2 * b^2 * c^2 * d^2'],
     ['(4 pi^2)/(4*pi)', 'pi'],
-    ['sqrt(a)*sqrt(a)', 'abs(a)'],
+    ['sqrt(a)*sqrt(a)', 'a'],
     ['(2 * sqrt(pi))*(sqrt(((2 pi)^2)/(4*pi)))', '2pi'],
     ['a*b*c*d', 'a * b * c * d'],
     ['pi*((1/pi)^2)', '1 / pi'],
@@ -449,7 +484,7 @@ describe('kemu extensions', function() {
     ['x/(d*x*e)', '1 / (d * e)'],
     ['pi * (1 / pi) ^ 2', '1 / pi'],
     ['sqrt(1/pi)', '1 / sqrt(pi)'],
-    ['sqrt(x^2)', 'abs(x)'],
+    ['sqrt(x^2)', 'x'],
     ['sqrt(x^6)', 'x^3'],
     ['sqrt(pi^2)', 'pi'],
     ['sqrt(pi^6)', 'pi^3'],
