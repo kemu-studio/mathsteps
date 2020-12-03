@@ -77,6 +77,11 @@ describe('simplify (arithmetic)', function () {
     ['5*(2+2)*10', '200'],
     ['(2+(2)+7)', '11'],
     ['(8-2) * 2^2 * (1+1) / (4 /2) / 5', '24/5'],
+    ['2+2', '4'],
+    ['2*3*5', '30'],
+    ['6*6', '36'],
+    ['9/4', '9/4'], //  does not divide
+    ['16 - 1953125', '-1953109'], // verify large negative number round correctly
 
     // Absolute value.
     ['abs(4)', '4'],
