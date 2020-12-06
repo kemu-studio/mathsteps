@@ -101,6 +101,7 @@ describe('collects and combines like terms', function() {
     ['x^y * x^z', 'x^(y + z)'],
     ['x^(3+y) + x^(3+y)+ 4', '2x^(y + 3) + 4'],
     ['x^2 + 3x*(-4x) + 5x^3 + 3x^2 + 6', '5x^3 - 8x^2 + 6'],
+    ['5/2x - 3/2x', 'x'],
   ]
   tests.forEach(t => testSimplify(t[0], t[1], t[2]))
 })
