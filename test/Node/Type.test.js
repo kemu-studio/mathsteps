@@ -1,7 +1,7 @@
 const assert = require('assert')
 const math = require('mathjs')
 
-const Negative = require('../../lib/Negative')
+// const Negative = require('../../lib/Negative')
 const Node = require('../../lib/node')
 const TestUtil = require('../TestUtil')
 
@@ -148,13 +148,13 @@ describe('getFraction', function () {
   // we can't just parse -2/3 to get the expected fraction,
   // because that will put a unary minus on the 2,
   // instead of using a constant node of value -2 as our code does
-  const negativeExpectedFraction = math.parse('2/3')
-  TestUtil.removeComments(negativeExpectedFraction)
-  Negative.negate(negativeExpectedFraction)
+//  const negativeExpectedFraction = math.parse('2/3')
+//  TestUtil.removeComments(negativeExpectedFraction)
+//  Negative.negate(negativeExpectedFraction)
 
-  it('-(2/3) -2/3', function () {
-    assert.deepEqual(
-      Node.CustomType.getFraction(math.parse('-(2/3)')),
-      negativeExpectedFraction)
-  })
+//  it('-(2/3) -2/3', function () {
+//    assert.deepEqual(
+//      Node.CustomType.getFraction(math.parse('-(2/3)')),
+//      negativeExpectedFraction)
+//  })
 })
