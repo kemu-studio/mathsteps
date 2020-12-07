@@ -1,7 +1,6 @@
 const assert = require('assert')
 const math = require('mathjs')
 const Node = require('../../lib/node')
-const TestUtil = require('../TestUtil')
 
 const constNode = Node.Creator.constant
 
