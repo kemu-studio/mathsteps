@@ -129,16 +129,6 @@ describe('isFraction', function () {
   })
 })
 
-// Tests imported from al_mixed_numbers
-describe('isMixedNumber', function () {
-  // Tests imported from al_mixed_numbers
-  const tests = [
-    ['5(1/6)'],
-    ['2(2/3)'],
-  ]
-  tests.forEach(t => assert(Node.Type.isMixedNumber(math.parse(t[0]))))
-})
-
 describe('getFraction', function () {
   it('2/3 2/3', function () {
     assert.deepEqual(
