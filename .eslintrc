@@ -40,6 +40,8 @@
     "module": true,
     "Map": true,
     "Set": true,
-    "Symbol": true
+    "Symbol": true,
+    "describe": true,
+    "it": true
   }
 }
