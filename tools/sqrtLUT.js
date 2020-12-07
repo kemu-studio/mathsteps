@@ -12,7 +12,7 @@ function insertEntry(value, p, q, n) {
 }
 
 for (let n = 2; n < MAX_N; n++) {
-  const MAX_PQ = parseInt(Math.pow(MAX_VALUE, 1/n))
+  const MAX_PQ = parseInt(Math.pow(MAX_VALUE, 1 / n))
 
   for (let p = 2; p < MAX_PQ; p++) {
     let value = Math.pow(p, n)

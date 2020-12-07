@@ -8,4 +8,4 @@ const result = mathsteps.solveEquation({
   }
 })
 
-console.log("SOLUTIONS", result.getSolutionsAsText())
+console.log('SOLUTIONS', result.getSolutionsAsText())
