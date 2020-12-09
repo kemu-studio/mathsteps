@@ -1,6 +1,6 @@
 const mathsteps = require('../index.js')
 
-const expr    = '2 * (5/x)'
+const expr    = '(2+2)/x/6/(y-z)'
 const exprObj = mathsteps.parseText(expr)
 
 console.log('--------------------------')
