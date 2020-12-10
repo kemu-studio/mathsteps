@@ -144,7 +144,7 @@ function simplifyExpression(expressionAsText, debug = false, expressionCtx = nul
 
   try {
     const expressionNode = parseText(expressionAsText)
-    rv = stepThrough(expressionNode, {
+    rv = stepThrough.oldApi(expressionNode, {
       isDebugMode: debug,
       expressionCtx: expressionCtx
     })
@@ -166,7 +166,7 @@ function isOkAsSymbolicExpression(expressionAsText) {
   if (expressionAsText && (expressionAsText.search(/-\s*-/) === -1)) {
     try {
       const expressionNode = parseText(expressionAsText + '*1')
-      const steps = stepThrough(expressionNode)
+      const steps = stepThrough.oldApi(expressionNode)
       rv = (steps.length > 0)
     } catch (e) {
       // Hide exceptions.
