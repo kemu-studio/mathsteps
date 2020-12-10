@@ -1,6 +1,13 @@
 /*
   TODO
 
+// Remove some property used in mathjs that we don't need and prevents node
+// equality checks from passing
+function removeComments(node) {
+  node.filter(node => node.comment !== undefined).forEach(
+    node => delete node.comment)
+}
+
 const assert = require('assert')
 const math = require('mathjs')
 
@@ -15,8 +22,8 @@ function testFlatten(exprStr, afterNode, debug = false) {
     // eslint-disable-next-line
     console.log(print.ascii(flattened));
   }
-  TestUtil.removeComments(flattened)
-  TestUtil.removeComments(afterNode)
+  removeComments(flattened)
+  removeComments(afterNode)
   it(print.ascii(flattened), function() {
     assert.deepEqual(flattened, afterNode)
   })
