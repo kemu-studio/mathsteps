@@ -6,8 +6,12 @@ const simplify = require('../../lib/simplifyExpression/simplify')
 function testSimplify(exprStr, outputStr, debug = false, ctx) {
   it(exprStr + ' -> ' + outputStr, function () {
     this.timeout(10000)
+    const options = {
+      isDebugMode: debug,
+      expressionCtx: ctx
+    }
     assert.deepEqual(
-      print.ascii(simplify(mathsteps.parseText(exprStr), debug, ctx)),
+      print.ascii(simplify(mathsteps.parseText(exprStr), options)),
       outputStr)
   })
 }
