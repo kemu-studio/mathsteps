@@ -144,7 +144,10 @@ function simplifyExpression(expressionAsText, debug = false, expressionCtx = nul
 
   try {
     const expressionNode = parseText(expressionAsText)
-    rv = stepThrough(expressionNode, debug, expressionCtx)
+    rv = stepThrough(expressionNode, {
+      isDebugMode: debug,
+      expressionCtx: expressionCtx
+    })
 
     // Make sure there is always at last one result-step.
     if ((rv.length === 0) && expressionNode.args) {
