@@ -148,11 +148,6 @@ function simplifyExpression(expressionAsText, debug = false, expressionCtx = nul
       isDebugMode: debug,
       expressionCtx: expressionCtx
     })
-
-    // Make sure there is always at last one result-step.
-    if ((rv.length === 0) && expressionNode.args) {
-      rv.push(Node.Status.nodeChanged(ChangeTypes.REARRANGE_COEFF, expressionNode, expressionNode))
-    }
   } catch (err) {
     console.log(err)
   }
