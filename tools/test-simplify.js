@@ -1,23 +1,24 @@
 const mathsteps = require('../index.js')
-
-const expr    = '(2+2)/x/6/(y-z)'
-const exprObj = mathsteps.parseText(expr)
+const expr      = '2 / (4x)'
+const exprObj   = mathsteps.parseText(expr)
 
 console.log('--------------------------')
 console.log('BEFORE')
 console.log('NODE:', exprObj)
 console.log('Ascii:', mathsteps.print(exprObj))
 console.log('LaTeX:', mathsteps.printAsTeX(exprObj))
-
-const steps   = mathsteps.simplifyExpression(expr, true)
-const newNode = steps[steps.length - 1].newNode
+console.log()
 
 console.log('--------------------------')
 console.log('STEPS')
-steps.forEach((item) => {
-  console.log(item.changeType, '|', mathsteps.print(item.newNode))// , '|', item.newNode)
+const newNode = mathsteps.simplifyExpression({
+  expressionAsText: expr,
+  onStepCb: (item) => {
+    console.log(item.changeType, '|', mathsteps.print(item.newNode))
+  }
 })
 
+console.log()
 console.log('--------------------------')
 console.log('AFTER')
 console.log('NODE:', newNode)
