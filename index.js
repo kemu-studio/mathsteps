@@ -139,15 +139,26 @@ function parseText(text) {
   return rv
 }
 
-function simplifyExpression(expressionAsText, debug = false, expressionCtx = null) {
-  let rv = []
+function simplifyExpression(options) {
+  let rv = null
 
   try {
-    const expressionNode = parseText(expressionAsText)
-    rv = stepThrough.oldApi(expressionNode, {
-      isDebugMode: debug,
-      expressionCtx: expressionCtx
-    })
+    // Fetch input expression.
+    let expressionNode = null
+
+    if (options.expressionAsText != null) {
+      expressionNode = parseText(options.expressionAsText)
+
+    } else if (options.expressionNode != null) {
+      expressionNode = options.expressionNode
+
+    } else {
+      throw 'missing expression'
+    }
+
+    // Simplify expression.
+    rv = stepThrough.newApi(expressionNode, options)
+
   } catch (err) {
     console.log(err)
   }
