@@ -139,20 +139,29 @@ function parseText(text) {
   return rv
 }
 
-function simplifyExpression(options) {
+function simplifyExpression(optionsOrExpressionAsText) {
   let rv = null
 
   try {
     // Fetch input expression.
     let expressionNode = null
+    let options        = {}
 
-    if (options.expressionAsText != null) {
-      expressionNode = parseText(options.expressionAsText)
-
-    } else if (options.expressionNode != null) {
-      expressionNode = options.expressionNode
+    if (typeof optionsOrExpressionAsText === 'string') {
+      expressionNode = parseText(optionsOrExpressionAsText)
 
     } else {
+      options = optionsOrExpressionAsText
+
+      if (options.expressionAsText != null) {
+      expressionNode = parseText(options.expressionAsText)
+
+      } else if (options.expressionNode != null) {
+        expressionNode = options.expressionNode
+      }
+    }
+
+    if (expressionNode == null) {
       throw 'missing expression'
     }
 
