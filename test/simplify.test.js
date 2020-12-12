@@ -1,18 +1,19 @@
-const assert = require('assert')
-const mathsteps = require('../../index.js')
-const print = require('../../lib/util/print')
-const simplify = require('../../lib/simplifyExpression/simplify')
+const assert    = require('assert')
+const mathsteps = require('../index.js')
+const print     = require('../lib/util/print')
 
 function testSimplify(exprStr, outputStr, debug = false, ctx) {
   it(exprStr + ' -> ' + outputStr, function () {
     this.timeout(10000)
     const options = {
+      expressionAsText: exprStr,
       isDebugMode: debug,
       expressionCtx: ctx
     }
-    assert.deepEqual(
-      print.ascii(simplify(mathsteps.parseText(exprStr), options)),
-      outputStr)
+
+    const resultNode   = mathsteps.simplifyExpression(options)
+    const resultAsText = print.ascii(resultNode)
+    assert.deepEqual(resultAsText, outputStr)
   })
 }
 
@@ -86,6 +87,18 @@ describe('simplify (arithmetic)', function () {
     ['6*6', '36'],
     ['9/4', '9/4'], //  does not divide
     ['16 - 1953125', '-1953109'], // verify large negative number round correctly
+
+    ['(2+2)', '4'],
+    ['(2+2)*5', '20'],
+    ['5*(2+2)', '20'],
+    ['2*(2+2) + 2^3', '16'],
+    ['6*6', '36'],
+    ['2+x', 'x + 2'],
+    ['(2+2)*x', '4x'],
+    ['(2+2)*x+3', '4x + 3'],
+    ['2+x+7', 'x + 9'],
+    ['2x^2 * y * x * y^3', '2x^3 * y^4'],
+    ['12x^2', '12x^2'],
 
     // Absolute value.
     ['abs(4)', '4'],

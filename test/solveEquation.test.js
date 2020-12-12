@@ -1,7 +1,7 @@
 const assert = require('assert')
 
-const Equation       = require('../../lib/kemuEquation/Equation')
-const EquationSolver = require('../../lib/kemuEquation/EquationSolver')
+const Equation       = require('../lib/kemuEquation/Equation')
+const EquationSolver = require('../lib/kemuEquation/EquationSolver')
 
 function testSolve(equationAsText, outputStr, debug = false) {
   // Possible improvement: Better unknown variable detect.
