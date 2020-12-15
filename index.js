@@ -1,7 +1,7 @@
 const {math} = require('./config')
 const ChangeTypes = require('./lib/ChangeTypes')
 const Node = require('./lib/node')
-const stepThrough = require('./lib/simplifyExpression/stepThrough')
+const stepThrough = require('./lib/simplifyExpression')
 const print = require('./lib/util/print').ascii
 const printLatex = require('./lib/util/print').latex
 const simplifyCommon = require('./lib/simplifyExpression/_common')
@@ -139,17 +139,35 @@ function parseText(text) {
   return rv
 }
 
-function simplifyExpression(expressionAsText, debug = false, expressionCtx = null) {
-  let rv = []
+function simplifyExpression(optionsOrExpressionAsText) {
+  let rv = null
 
   try {
-    const expressionNode = parseText(expressionAsText)
-    rv = stepThrough(expressionNode, debug, expressionCtx)
+    // Fetch input expression.
+    let expressionNode = null
+    let options        = {}
 
-    // Make sure there is always at last one result-step.
-    if ((rv.length === 0) && expressionNode.args) {
-      rv.push(Node.Status.nodeChanged(ChangeTypes.REARRANGE_COEFF, expressionNode, expressionNode))
+    if (typeof optionsOrExpressionAsText === 'string') {
+      expressionNode = parseText(optionsOrExpressionAsText)
+
+    } else {
+      options = optionsOrExpressionAsText
+
+      if (options.expressionAsText != null) {
+      expressionNode = parseText(options.expressionAsText)
+
+      } else if (options.expressionNode != null) {
+        expressionNode = options.expressionNode
+      }
     }
+
+    if (expressionNode == null) {
+      throw 'missing expression'
+    }
+
+    // Simplify expression.
+    rv = stepThrough.newApi(expressionNode, options)
+
   } catch (err) {
     console.log(err)
   }
@@ -163,7 +181,7 @@ function isOkAsSymbolicExpression(expressionAsText) {
   if (expressionAsText && (expressionAsText.search(/-\s*-/) === -1)) {
     try {
       const expressionNode = parseText(expressionAsText + '*1')
-      const steps = stepThrough(expressionNode)
+      const steps = stepThrough.oldApi(expressionNode)
       rv = (steps.length > 0)
     } catch (e) {
       // Hide exceptions.
