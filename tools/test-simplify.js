@@ -15,12 +15,14 @@ console.log('STEPS')
 const newNode = mathsteps.simplifyExpression({
   expressionAsText: expr,
   onStepCb: (stepMeta) => {
-    console.log(stepMeta)//item.changeType, '|', mathsteps.printAsTeX(item.newNode))
+    console.log(stepMeta.changeType, '|', mathsteps.printAsTeX(stepMeta.rootNode))
 
+    /*
     if (stepMeta.altForms) {
       console.log('ALT FORM:', mathsteps.printAsTeX(stepMeta.altForms[0].node))
       console.log(stepMeta.altForms[0].node)
     }
+    */
   }
 })
 
