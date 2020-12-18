@@ -15,7 +15,7 @@ console.log('STEPS')
 const newNode = mathsteps.simplifyExpression({
   expressionAsText: expr,
   onStepCb: (stepMeta) => {
-    console.log(stepMeta.changeType, '|', mathsteps.printAsTeX(stepMeta.rootNode))
+    console.log(stepMeta.changeType, '|', mathsteps.print(stepMeta.rootNode))
 
     /*
     if (stepMeta.altForms) {
