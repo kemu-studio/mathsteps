@@ -1,7 +1,7 @@
 const mathsteps = require('../index.js')
 
 const result = mathsteps.solveEquation({
-  equationAsText: '4x^2 - 25y^2 = 0',
+  equationAsText: 'x/(2/3) = 1',
   unknownVariable: 'x',
   onStepCb: function(step) {
     console.log(`[ ${step.equation.getId()} ] ${step.stepId} | ${step.equation}`)

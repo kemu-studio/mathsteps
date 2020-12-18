@@ -33,7 +33,7 @@ TestUtil.testSimplification = function (simplifyingFunction, exprString,
   expectedOutputString) {
   it (exprString + ' -> ' + expectedOutputString,  () => {
     assert.deepEqual(
-      print.ascii(simplifyingFunction(flatten(mathsteps.parseText(exprString))).newNode),
+      print.ascii(simplifyingFunction(flatten(mathsteps.parseText(exprString))).rootNode),
       expectedOutputString)
   })
 }
