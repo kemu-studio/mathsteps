@@ -1,5 +1,5 @@
 const mathsteps = require('../index.js')
-const expr      = '2 / (4x)'
+const expr      = '(x - 2)^2'
 const exprObj   = mathsteps.parseText(expr)
 
 console.log('--------------------------')
@@ -11,10 +11,16 @@ console.log()
 
 console.log('--------------------------')
 console.log('STEPS')
+
 const newNode = mathsteps.simplifyExpression({
   expressionAsText: expr,
-  onStepCb: (item) => {
-    console.log(item.changeType, '|', mathsteps.print(item.newNode))
+  onStepCb: (stepMeta) => {
+    console.log(stepMeta)//item.changeType, '|', mathsteps.printAsTeX(item.newNode))
+
+    if (stepMeta.altForms) {
+      console.log('ALT FORM:', mathsteps.printAsTeX(stepMeta.altForms[0].node))
+      console.log(stepMeta.altForms[0].node)
+    }
   }
 })
 
