@@ -96,11 +96,44 @@ function convertTextToTeX(text) {
   return rv
 }
 
+function _kemuNormalizeMultiplyDivision(node) {
+  if (node.op === '/') {
+    // x/y
+    const nodeTop    = node.args[0]
+    const nodeBottom = node.args[1]
+
+    if ((nodeTop.op === '*') &&
+        (nodeTop.args[0].op === '/')) {
+
+      // a/b * c         a   c
+      // -------- gives  - * -
+      //  d              b   d
+
+      const nodeCd = node
+      node = node.args[0]
+
+      nodeCd.args  = [nodeTop.args[1], nodeBottom]
+      node.args[1] = nodeCd
+    }
+  }
+
+  if (node.args) {
+    node.args.forEach((oneArg, idx) => {
+      if (oneArg) {
+        node.args[idx] = _kemuNormalizeMultiplyDivision(oneArg)
+      }
+    })
+  }
+
+  return node
+}
+
 function _parseTextInternal(text) {
   let rv = math.parse(text)
 
   // Make sure we store all constant nodes as bignumber to avoid fake unequals.
   rv = simplifyCommon.kemuNormalizeConstantNodes(rv)
+  rv = _kemuNormalizeMultiplyDivision(rv)
 
   return rv
 }
