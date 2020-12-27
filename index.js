@@ -64,6 +64,23 @@ function compareByText(x, y) {
   return rv
 }
 
+function _convertTextToTeXInternal(text) {
+  // Handle equation render: a = b = c = ...
+  let   rv     = ''
+  const tokens = text.split('=')
+  let   sep    = ''
+
+  tokens.forEach((token) => {
+    token = token.trim()
+    if (token !== '') {
+      rv += sep + printAsTeX(parseText(token))
+      sep = '='
+    }
+  })
+
+  return rv
+}
+
 function convertTextToTeX(text) {
   let rv = text
 
@@ -78,7 +95,7 @@ function convertTextToTeX(text) {
           console.log('[ KMATHSTEPS ] Cache missing (text to TeX)', text)
         }
 
-        rv = printAsTeX(parseText(text))
+        rv = _convertTextToTeXInternal(text)
         CACHE_TEXT_TO_TEX[text] = rv
 
       } else {
@@ -89,18 +106,52 @@ function convertTextToTeX(text) {
       }
     } else {
       // Cache disabled - just wrap original call.
-      rv = printAsTeX(math.parse(text))
+      rv = _convertTextToTeXInternal(text)
     }
   }
 
   return rv
 }
 
+function _kemuNormalizeMultiplyDivision(node) {
+  if (node.op === '/') {
+    // x/y
+    const nodeTop    = node.args[0]
+    const nodeBottom = node.args[1]
+
+    if ((nodeTop.op === '*') &&
+        (nodeTop.args[0].op === '/')) {
+
+      // a/b * c         a   c
+      // -------- gives  - * -
+      //  d              b   d
+
+      const nodeCd = node
+      node = node.args[0]
+
+      nodeCd.args  = [nodeTop.args[1], nodeBottom]
+      node.args[1] = nodeCd
+    }
+  }
+
+  if (node.args) {
+    node.args.forEach((oneArg, idx) => {
+      if (oneArg) {
+        node.args[idx] = _kemuNormalizeMultiplyDivision(oneArg)
+      }
+    })
+  }
+
+  return node
+}
+
 function _parseTextInternal(text) {
+  // Process text into node.
   let rv = math.parse(text)
 
   // Make sure we store all constant nodes as bignumber to avoid fake unequals.
   rv = simplifyCommon.kemuNormalizeConstantNodes(rv)
+  rv = _kemuNormalizeMultiplyDivision(rv)
 
   return rv
 }
