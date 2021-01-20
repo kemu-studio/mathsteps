@@ -107,6 +107,42 @@ describe('simplify (arithmetic)', function () {
   tests.forEach(t => testSimplify(t[0], t[1], t[2]))
 })
 
+describe('simplify (percents)', function () {
+  const tests = [
+    // Percent to fraction conversion.
+    ['percent(1)', '1/100'],
+    ['percent(2)', '1/50'],
+    ['percent(100)', '1'],
+    ['percent(123)', '123/100'],
+    ['percent(200)', '2'],
+
+    // Percent-percent arithmetic.
+    ['percent(1) + percent(2)', '3/100'],
+    ['percent(7) - percent(3)', '1/25'],
+    ['percent(2) * percent(3)', '3/5000'],
+    ['percent(20) / percent(4)', '5'],
+
+    // Percent-number arithmetic.
+    ['percent(1) + 2', '201/100'],
+    ['percent(7) - 3', '-293/100'],
+    ['percent(2) * 3', '3/50'],
+    ['percent(20) / 4', '1/20'],
+
+    // Percent-symbol arithmetic.
+    ['percent(1) + x', 'x + 1/100'],
+    ['percent(7) - x', '7/100 - x'],
+    ['percent(234) * x', '117/50x'],
+    ['percent(20) / x', '1 / (5x)'],
+
+    // Non constant percent.
+    ['percent(x) + x', '101/100x'],
+    ['x - percent(x)', 'x - x / 100'], // TODO: 99/100x
+    ['percent(x) * x', 'x^2 / 100'],
+    ['percent(x) / x', '1/100'],
+  ]
+  tests.forEach(t => testSimplify(t[0], t[1], t[2]))
+})
+
 describe('collects and combines like terms', function() {
   const tests = [
     ['x^2 + 3x*(-4x) + 5x^3 + 3x^2 + 6', '5x^3 - 8x^2 + 6'],

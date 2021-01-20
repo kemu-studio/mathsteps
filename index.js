@@ -15,6 +15,10 @@ const CACHE_COMPARE      = {}
 const CACHE_TEXT_TO_TEX  = {}
 const CACHE_TEXT_TO_NODE = {}
 
+// Stack of caller registered preprocess function.
+// Empty by default.
+const ARRAY_OF_PREPROCESS_FUNCTIONS_BEFORE_PARSE = []
+
 function _compareByTextInternal(x, y) {
   try {
     return math.compare(x, y)
@@ -146,6 +150,11 @@ function _kemuNormalizeMultiplyDivision(node) {
 }
 
 function _parseTextInternal(text) {
+  // Preprocess text before passing in to mathjs parser if needed.
+  ARRAY_OF_PREPROCESS_FUNCTIONS_BEFORE_PARSE.forEach((preprocessFct) => {
+    text = preprocessFct(text)
+  })
+
   // Process text into node.
   let rv = math.parse(text)
 
@@ -271,6 +280,10 @@ function normalizeExpression(text) {
   return rv
 }
 
+function registerPreprocessorBeforeParse(cb) {
+  ARRAY_OF_PREPROCESS_FUNCTIONS_BEFORE_PARSE.push(cb)
+}
+
 module.exports = {
   simplifyExpression,
   solveEquation,
@@ -284,5 +297,6 @@ module.exports = {
   convertTextToTeX,
   parseText,
   isOkAsSymbolicExpression,
-  Node
+  Node,
+  registerPreprocessorBeforeParse,
 }
